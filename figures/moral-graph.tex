@@ -1,0 +1,48 @@
+\begin{tikzpicture}[]
+
+  \tikzset{CliqueStyle/.style =  {opacity=.4,line width=14 mm,line cap=round,color=#1,join=round}}
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                  &
+                                                  &
+    \node (d)   [var, minimum size=0.7cm] {$D$};  &
+                                                 \\
+    % Second line
+                                                  &
+    \node (b)   [var, minimum size=0.7cm] {$B$};  &
+                                                  &
+                                                 \\
+    % Third line
+    \node (a) [var, minimum size=0.7cm] {$A$};    &
+                                                  &
+                                                  &
+    \node (f) [var, minimum size=0.7cm] {$F$};   \\
+    % Forth line
+                                                  &
+    \node (c)   [var, minimum size=0.7cm] {$C$};  &
+    \node (e)   [var, minimum size=0.7cm] {$E$};  &
+                                                 \\
+  };
+
+  \draw (a) edge (b);
+  \draw (a) edge (c);
+  \draw (b) edge (d);
+  \draw (b) edge (f);
+  \draw [] (b) edge (e); % add annotation saying that this is the added edge
+  \draw (c) edge (e);
+  \draw (e) edge (f);
+
+  %\path (b) -- node[anchor=center,xshift=-0.2cm,yshift=-0.2cm,rotate=35] (be) {$\rightarrow$} (e);
+
+  %\begin{pgfonlayer}{background}
+  %  \draw [CliqueStyle=MaterialBlue] (a.center) -- (b.center) ;
+  %  \draw [CliqueStyle=MaterialGreen] (b.center) -- (d.center) ;
+  %  \draw [CliqueStyle=MaterialYellow] (a.center) -- (c.center) ;
+  %  \draw [CliqueStyle=MaterialRed] (c.center) -- (e.center) ;
+  %  \draw [CliqueStyle=MaterialCyan] (b.center) -- (f.center) -- (e.center) -- (b.center);
+  %\end{pgfonlayer}
+
+\end{tikzpicture}
+

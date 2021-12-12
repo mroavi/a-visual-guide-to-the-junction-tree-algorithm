@@ -1,0 +1,28 @@
+\begin{tikzpicture}[node distance=20mm,auto,>=stealth']
+  \begin{scope}
+    %\draw[style=dotted] (0,-10cm) grid[xstep=1cm, ystep=1cm] (12cm,6cm);
+
+    \node[]at (0,0) (fl) {};
+    \node[box, right of=fl, node distance=15mm] (fa) {$f_a$};
+    \node[box, right of=fa] (fb) {$f_b$};
+    \node[box, right of=fb,node distance=22mm] (fc) {$f_c$};
+    \node[right of=fc, node distance=15mm] (fr) {};
+    \node[below of=fb, node distance=15mm] (fd) {};
+
+    \path[line] (fl) edge[->] node[anchor=north]{$x_1$} (fa);
+    \path[line] (fa) edge[->] node[anchor=north]{$x_2$} (fb);
+    \path[line] (fb) edge[->] node[anchor=north]{$x_4$} (fc);
+    \path[line] (fc) edge[->] node[anchor=north]{$x_5$} (fr);
+    \path[line] (fb) edge[->] node[anchor=east]{$x_3$} (fd);
+
+    %\draw[dashed,opacity=1] (-0.05,-0.5) rectangle (2.0,0.5);
+    %\draw[dashed,opacity=1] (-0.2,-1.5) rectangle(4,1);
+
+    %% \draw[dashed,opacity=0.3] (5,-0.5) rectangle (7,0.5);
+    %\msgcircle{up}{right}{fa}{fb}{0.5}{$1$}{black};
+    %\msgcircle{up}{right}{fb}{fc}{0.37}{$2$}{black};
+    %\msgcircle{up}{left}{fb}{fc}{0.65}{$3$}{black};
+
+  \end{scope}
+\end{tikzpicture}
+

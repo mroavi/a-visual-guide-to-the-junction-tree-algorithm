@@ -1,0 +1,1035 @@
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Connection of Clusters}
+
+\centering
+
+{\footnotesize
+  Let's transform the complete cluster graph into a \textit{junction tree} in an
+  \textit{optimal} way \cite{jensen2013optimal}.
+}
+
+\begin{figure}
+
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B,D\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B,E,F\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B,C,E\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A,B,C\}$}; \\
+  };
+
+
+  %% The diagram elements are now connected through lines:
+  \path[-]
+    (bd) edge (bef)
+    (bd) edge (bce)
+    (bd) edge (abc)
+    (bef) edge (bce)
+    (bef) edge (abc)
+    (bce) edge (abc)
+    ;
+
+  %% The diagram elements are now connected through lines:
+  %% (See manual pg. 132)
+  %\path[-]
+  %  (bd)  edge node[above] {$1$} (bef)
+  %        edge [ultra thick] node[left] {$1$} (bce)
+  %        edge node[above right,pos=0.8] {$1$} (abc)
+  %  (bef) edge [ultra thick] node[above left,pos=0.8] {$2$} (bce)
+  %        edge node[right] {$1$} (abc)
+  %  (bce) edge [ultra thick] node[below] {$2$} (abc)
+  %  ;
+
+\end{tikzpicture}
+}
+\end{subfigure}
+
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Connection of Clusters}
+
+\centering
+
+{\footnotesize
+  Like before, subscripts denote the variable's \textit{cardinality}.
+}
+
+\begin{figure}
+
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+
+  %% The diagram elements are now connected through lines:
+  \path[-]
+    (bd) edge (bef)
+    (bd) edge (bce)
+    (bd) edge (abc)
+    (bef) edge (bce)
+    (bef) edge (abc)
+    (bce) edge (abc)
+    ;
+
+\end{tikzpicture}
+}
+\end{subfigure}
+
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Connection of Clusters}
+
+\centering
+
+{\footnotesize
+  Count the common variables between each pair of clusters.
+}
+
+\begin{figure}
+
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+
+
+  % The diagram elements are now connected through lines:
+  % (See manual pg. 132)
+  \path[-]
+    (bd)  edge node[above] {$1$} (bef)
+          edge node[left] {$1$} (bce)
+          edge node[above right,pos=0.8] {$1$} (abc)
+    (bef) edge node[above left,pos=0.8] {$2$} (bce)
+          edge node[right] {$1$} (abc)
+    (bce) edge node[below] {$2$} (abc)
+    ;
+
+\end{tikzpicture}
+}
+\end{subfigure}
+
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Connection of Clusters}
+
+\centering
+
+{\footnotesize
+  Create a new graph with only the nodes of the complete cluster graph.
+}
+
+\begin{figure}
+
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+
+  % The diagram elements are now connected through lines:
+  % (See manual pg. 132)
+  \path[-]
+    (bd)  edge node[above] {$1$} (bef)
+          edge node[left] {$1$} (bce)
+          edge node[above right,pos=0.8] {$1$} (abc)
+    (bef) edge node[above left,pos=0.8] {$2$} (bce)
+          edge node[right] {$1$} (abc)
+    (bce) edge node[below] {$2$} (abc)
+    ;
+
+\end{tikzpicture}
+}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+\end{tikzpicture}
+}
+\end{subfigure}
+
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Connection of Clusters}
+
+\centering
+
+{\footnotesize
+  Select the edge that connects the two clusters with the most common variables
+  \textit{and} that would not create a loop in the right graph if moved.
+}
+
+\begin{figure}
+
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+
+  % The diagram elements are now connected through lines:
+  % (See manual pg. 132)
+  \path[-]
+    (bd)  edge node[above] {$1$} (bef)
+          edge node[left] {$1$} (bce)
+          edge node[above right,pos=0.8] {$1$} (abc)
+    (bef) edge node[above left,pos=0.8] {$2$} (bce)
+          edge node[right] {$1$} (abc)
+    (bce) edge node[below] {$2$} (abc)
+    ;
+
+\end{tikzpicture}
+}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+\end{tikzpicture}
+}
+\end{subfigure}
+
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Connection of Clusters}
+
+\centering
+
+{\footnotesize
+  Tie.\\
+  Then select the edge connecting the clusters that have the smallest
+  \textit{state space} size.
+}
+
+\begin{figure}
+
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+
+  % The diagram elements are now connected through lines:
+  % (See manual pg. 132)
+  \path[-]
+    (bd)  edge node[above] {$1$} (bef)
+          edge node[left] {$1$} (bce)
+          edge node[above right,pos=0.8] {$1$} (abc)
+    (bef) edge [ultra thick] node[above left,pos=0.8] {$2$} (bce)
+          edge node[right] {$1$} (abc)
+    (bce) edge [ultra thick] node[below] {$2$} (abc)
+    ;
+
+\end{tikzpicture}
+}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+\end{tikzpicture}
+}
+\end{subfigure}
+
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Connection of Clusters}
+
+\centering
+
+{\footnotesize
+  $ \lvert \{B_4,C_3,E_2\} \rvert + \lvert \{B_4,E_2,F_3\} \rvert <
+  \lvert \{B_4,C_3,E_2\} \rvert + \lvert \{A_3,B_4,C_3\} \rvert $,\\
+  therefore the edge connecting
+  $\{B_4,C_3,E_2\}$ and $\{B_4,E_2,F_3\}$ wins.
+}
+
+\begin{figure}
+
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+
+  % The diagram elements are now connected through lines:
+  % (See manual pg. 132)
+  \path[-]
+    (bd)  edge node[above] {$1$} (bef)
+          edge node[left] {$1$} (bce)
+          edge node[above right,pos=0.8] {$1$} (abc)
+    (bef) edge [ultra thick] node[above left,pos=0.8] {$2$} (bce)
+          edge node[right] {$1$} (abc)
+    (bce) edge node[below] {$2$} (abc)
+    ;
+
+\end{tikzpicture}
+}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+\end{tikzpicture}
+}
+\end{subfigure}
+
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Connection of Clusters}
+
+\centering
+
+{\footnotesize
+  Move the selected edge to the right graph.
+}
+
+\begin{figure}
+
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+
+  % The diagram elements are now connected through lines:
+  % (See manual pg. 132)
+  \path[-]
+    (bd)  edge node[above] {$1$} (bef)
+          edge node[left] {$1$} (bce)
+          edge node[above right,pos=0.8] {$1$} (abc)
+    %(bef) edge node[above left,pos=0.8] {$2$} (bce)
+    (bef) edge node[right] {$1$} (abc)
+    (bce) edge node[below] {$2$} (abc)
+    ;
+
+\end{tikzpicture}
+}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+  \path[-]
+    (bce) edge (bef)
+    ;
+\end{tikzpicture}
+}
+\end{subfigure}
+
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Connection of Clusters}
+
+\centering
+
+{\footnotesize
+  Repeat this procedure of selecting and adding edges until\\
+  the right graph has $N-1$ edges, where $N$ is the number of clusters.
+}
+
+\begin{figure}
+
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+
+  % The diagram elements are now connected through lines:
+  % (See manual pg. 132)
+  \path[-]
+    (bd)  edge node[above] {$1$} (bef)
+          edge node[left] {$1$} (bce)
+          edge node[above right,pos=0.8] {$1$} (abc)
+    %(bef) edge node[above left,pos=0.8] {$2$} (bce)
+    (bef) edge node[right] {$1$} (abc)
+    (bce) edge node[below] {$2$} (abc)
+    ;
+
+\end{tikzpicture}
+}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+  \path[-]
+    (bce) edge (bef)
+    ;
+\end{tikzpicture}
+}
+\end{subfigure}
+
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Connection of Clusters}
+
+\centering
+
+%{\footnotesize
+%  Repeat selecting and adding edges until the right graph has $N-1$ edges.
+%}
+
+\begin{figure}
+
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+
+  % The diagram elements are now connected through lines:
+  % (See manual pg. 132)
+  \path[-]
+    (bd)  edge node[above] {$1$} (bef)
+          edge node[left] {$1$} (bce)
+          edge node[above right,pos=0.8] {$1$} (abc)
+    %(bef) edge [ultra thick] node[above left,pos=0.8] {$2$} (bce)
+    (bef) edge node[right] {$1$} (abc)
+    (bce) edge [ultra thick] node[below] {$2$} (abc)
+    ;
+
+\end{tikzpicture}
+}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+  \path[-]
+    (bce) edge (bef)
+    ;
+\end{tikzpicture}
+}
+\end{subfigure}
+
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Connection of Clusters}
+
+\centering
+
+%{\footnotesize
+%  Repeat selecting and adding edges until the right graph has $N-1$ edges.
+%}
+
+\begin{figure}
+
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+
+  % The diagram elements are now connected through lines:
+  % (See manual pg. 132)
+  \path[-]
+    (bd)  edge node[above] {$1$} (bef)
+          edge node[left] {$1$} (bce)
+          edge node[above right,pos=0.8] {$1$} (abc)
+    %(bef) edge [ultra thick] node[above left,pos=0.8] {$2$} (bce)
+    (bef) edge node[right] {$1$} (abc)
+    %(bce) edge [ultra thick] node[below] {$2$} (abc)
+    ;
+
+\end{tikzpicture}
+}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+  \path[-]
+    (bef) edge (bce)
+    (bce) edge (abc)
+    ;
+\end{tikzpicture}
+}
+\end{subfigure}
+
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Connection of Clusters}
+
+\centering
+
+%{\footnotesize
+%  Repeat selecting and adding edges until the right graph has $N-1$ edges.
+%}
+
+\begin{figure}
+
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+
+  % The diagram elements are now connected through lines:
+  % (See manual pg. 132)
+  \path[-]
+    (bd)  edge [ultra thick] node[above] {$1$} (bef)
+          edge [ultra thick] node[left] {$1$} (bce)
+          edge [ultra thick] node[above right,pos=0.8] {$1$} (abc)
+    %(bef) edge [ultra thick] node[above left,pos=0.8] {$2$} (bce)
+    (bef) edge node[right] {$1$} (abc)
+    %(bce) edge [ultra thick] node[below] {$2$} (abc)
+    ;
+
+\end{tikzpicture}
+}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+  \path[-]
+    (bef) edge (bce)
+    (bce) edge (abc)
+    ;
+\end{tikzpicture}
+}
+\end{subfigure}
+
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Connection of Clusters}
+
+\centering
+
+%{\footnotesize
+%  Repeat selecting and adding edges until the right graph has $N-1$ edges.
+%}
+
+\begin{figure}
+
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+
+  % The diagram elements are now connected through lines:
+  % (See manual pg. 132)
+  \path[-]
+    (bd)  edge node[above] {$1$} (bef)
+          edge [ultra thick] node[left] {$1$} (bce)
+          edge node[above right,pos=0.8] {$1$} (abc)
+    %(bef) edge [ultra thick] node[above left,pos=0.8] {$2$} (bce)
+    (bef) edge node[right] {$1$} (abc)
+    %(bce) edge [ultra thick] node[below] {$2$} (abc)
+    ;
+
+\end{tikzpicture}
+}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+  \path[-]
+    (bef) edge (bce)
+    (bce) edge (abc)
+    ;
+\end{tikzpicture}
+}
+\end{subfigure}
+
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Connection of Clusters}
+
+\centering
+
+%{\footnotesize
+%  Repeat selecting and adding edges until the right graph has $N-1$ edges.
+%}
+
+\begin{figure}
+
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+
+  % The diagram elements are now connected through lines:
+  % (See manual pg. 132)
+  \path[-]
+    (bd)  edge node[above] {$1$} (bef)
+          %edge [ultra thick] node[left] {$1$} (bce)
+    (bd)  edge node[above right,pos=0.8] {$1$} (abc)
+    %(bef) edge [ultra thick] node[above left,pos=0.8] {$2$} (bce)
+    (bef) edge node[right] {$1$} (abc)
+    %(bce) edge [ultra thick] node[below] {$2$} (abc)
+    ;
+
+\end{tikzpicture}
+}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\scalebox{0.8}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+  \path[-]
+    (bef) edge (bce)
+    (bce) edge (abc)
+    (bd) edge (bce)
+    ;
+\end{tikzpicture}
+}
+\end{subfigure}
+
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Connection of Clusters}
+
+\centering
+
+{\footnotesize
+  Finally, we label each edge with a \textit{sepset},
+  \\i.e. the intersection of variables between adjacent clusters.
+}
+
+\begin{figure}
+
+\begin{subfigure}[b]{0.41\linewidth}
+\centering
+\scalebox{0.75}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm,ampersand replacement=\&] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B_4,D_7\}$};    \&
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B_4,E_2,F_3\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B_4,C_3,E_2\}$};  \&
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A_3,B_4,C_3\}$}; \\
+  };
+  \path[-]
+    (bef) edge (bce)
+    (bce) edge (abc)
+    (bd) edge (bce)
+    ;
+\end{tikzpicture}
+}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.58\linewidth}
+\centering
+\scalebox{0.75}{
+\begin{tikzpicture}[>=latex]
+
+  \tikzset{CliqueStyle/.style =  {opacity=.4,color=#1,}}
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=0.26cm,column sep=0.20cm,ampersand replacement=\&] {
+    % First line
+                                                         \&
+                                                         \&
+    \node (bd) [bag, minimum size=1.8cm, draw=D] {$\{B,D\}$};  \&
+                                                         \&
+                                                        \\
+    % Second line
+                                                         \&
+                                                         \&
+    \node (b) [hsepset] {$\{B\}$};                    \&
+                                                         \&
+                                                        \\
+    % Third line
+    \node (abc) [bag,minimum size=1.8cm,draw=C] {$\{A,B,C\}$};  \&
+    \node (bc) [vsepset] {$\{B,C\}$};                    \&
+    \node (bce) [bag,minimum size=1.8cm,draw=E] {$\{B,C,E\}$};  \&
+    \node (be) [vsepset] {$\{B,E\}$};                    \&
+    \node (bef) [bag,minimum size=1.8cm,draw=F] {$\{B,E,F\}$};
+                                                        \\
+  };
+
+  % The diagram elements are now connected through lines:
+  \path[-]
+    (bd) edge (b)
+    (b) edge (bce)
+    (abc) edge (bc)
+    (bc) edge (bce)
+    (bce) edge (be)
+    (be) edge (bef)
+    ;
+
+  %% Draw colored circles inside clusters corresponding to the assigned cliques
+  %\node at (bd) [draw,yshift=-4.0mm] [bag,CliqueStyle=MaterialGreen] {} ;
+  %\node at (abc) [draw,yshift= 5.0mm] [bag,CliqueStyle=MaterialOrange] {} ;
+  %\node at (abc) [draw,yshift=-4.0mm,xshift= 3.0mm] [bag,CliqueStyle=MaterialBlue] {} ;
+  %\node at (abc) [draw,yshift=-4.0mm,xshift=-3.0mm] [bag,CliqueStyle=MaterialCyan] {} ;
+  %\node at (bce) [draw,yshift=-4.0mm] [bag,CliqueStyle=MaterialPurple] {} ;
+  %\node at (bef) [draw,yshift=-4.0mm] [bag,CliqueStyle=MaterialRed] {} ;
+
+\end{tikzpicture}
+}
+\end{subfigure}
+
+\end{figure}
+
+\end{frame}
+

@@ -1,0 +1,25 @@
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=1.0cm,column sep=1.0cm] {
+
+    % First line
+    \node (bd)  [bag, minimum size=1.8cm, draw=D] {$\{B,D\}$};    &
+    \node (bef) [bag, minimum size=1.8cm, draw=F] {$\{B,E,F\}$}; \\
+    % Second line
+    \node (bce) [bag, minimum size=1.8cm, draw=E] {$\{B,C,E\}$};  &
+    \node (abc) [bag, minimum size=1.8cm, draw=C] {$\{A,B,C\}$}; \\
+  };
+    
+  %% The diagram elements are now connected through lines:
+  \path[-]
+    (bd) edge (bef)
+    (bd) edge (bce)
+    (bd) edge (abc)
+    (bef) edge (bce)
+    (bef) edge (abc)
+    (bce) edge (abc)
+    ;
+
+\end{tikzpicture}
+

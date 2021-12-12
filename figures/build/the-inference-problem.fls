@@ -1,0 +1,6 @@
+PWD /home/mroavi/Dropbox/Apps/Overleaf/Martin_2021_The-Junction-Tree-Algorithm-A-Visual-Guide/figures
+INPUT /usr/local/texlive/2020/texmf.cnf
+INPUT /usr/local/texlive/2020/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2020/texmf-var/web2c/pdftex/pdflatex.fmt
+INPUT the-inference-problem.tex
+OUTPUT build/the-inference-problem.log

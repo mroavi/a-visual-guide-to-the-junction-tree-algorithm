@@ -1,0 +1,10 @@
+# Fdb version 3
+["pdflatex"] 1639160194 "the-inference-problem.tex" "build/the-inference-problem.pdf" "the-inference-problem" 1639160194
+  "/usr/local/texlive/2020/texmf-dist/web2c/texmf.cnf" 1583102494 39451 60d7debd9ef8ece44cbe965493576c2d ""
+  "/usr/local/texlive/2020/texmf-var/web2c/pdftex/pdflatex.fmt" 1596726851 2441082 5d18a4dbe7fd6da027e12a75bd31bb65 ""
+  "/usr/local/texlive/2020/texmf.cnf" 1596726787 455 5b996dcaa0eb4ef14a83b026bc0a008c ""
+  "build/the-inference-problem.aux" 1639159914 8 a94a2480d3289e625eea47cd1b285758 ""
+  "the-inference-problem.tex" 1639160192 1697 2c94fa85e31aba2ac69fd34646ffecee ""
+  (generated)
+  "build/the-inference-problem.pdf"
+  "build/the-inference-problem.log"

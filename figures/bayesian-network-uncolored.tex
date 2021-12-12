@@ -1,0 +1,40 @@
+
+\tikzset {
+  myarrow/.style= {-{Stealth[scale=1.0]}},
+}
+
+\begin{tikzpicture}[]
+
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                &
+                                                &
+    \node (d) [var, minimum size=0.7cm] {$D$};  &
+                                               \\
+    % Second line
+                                                &
+    \node (b) [var, minimum size=0.7cm] {$B$};  &
+                                                &
+                                               \\
+    % Third line
+    \node (a) [var, minimum size=0.7cm] {$A$};  &
+                                                &
+                                                &
+    \node (f) [var, minimum size=0.7cm] {$F$}; \\
+    % Forth line
+                                                &
+    \node (c) [var, minimum size=0.7cm] {$C$};  &
+    \node (e) [var, minimum size=0.7cm] {$E$};  &
+                                               \\
+  };
+
+  \draw [myarrow] (a) edge (b);
+  \draw [myarrow] (a) edge (c);
+  \draw [myarrow] (b) edge (d);
+  \draw [myarrow] (b) edge (f);
+  \draw [myarrow] (c) edge (e);
+  \draw [myarrow] (e) edge (f);
+
+\end{tikzpicture}
+

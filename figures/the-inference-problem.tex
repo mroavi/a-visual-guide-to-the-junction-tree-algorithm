@@ -1,0 +1,53 @@
+\tikzset {
+  every node/.style={node distance=20mm and 1.0mm},
+  myroundbox/.style= {
+    rectangle,rounded corners=3mm,drop shadow,minimum height=0.7cm,font=\small,
+    minimum width=\columnwidth*0.28,align=center,fill=white,draw=black,
+  },
+  myrectbox/.style= {
+    rectangle,drop shadow,minimum height=0.7cm,font=\small,
+    minimum width=\columnwidth*0.28,align=center,fill=white,draw=black,
+  },
+  myarrow/.style={=black,-{Stealth[scale=1.0]},shorten >=2pt},
+  mylabel/.style={text=black,right,xshift=2mm,text width=3.2cm,font=\small},
+  surrbox/.style={thick,draw=black,rounded corners=2mm},
+  surrboxlabel/.style={anchor=center,rotate=90,yshift=3mm,font=\small},
+}
+
+\begin{tikzpicture}
+
+  %\draw[help lines] (0,0) grid (10,-7);
+
+  % mrv: the "node distances" refer to the distance between the edge of a shape
+  % to the edge of the other shape. That is why I use "ie_aux" and "mar_aux"
+  % below: to have equal distances between nodes with respect to the center of
+  % the shapes.
+
+  % row 1
+  \node[myroundbox] (rv) {Random Variables\\$\mathcal{V}$};
+  \node[right=of rv](aux1) {};
+  \node[right=of aux1,myroundbox] (jd) {Joint Distribution\\$P(\mathcal{V})$};
+  \node[right=of jd](aux2) {};
+  \node[right=of aux2,myroundbox] (e) {Evidence\\$\bm{E=e}$};
+  \node[right=of e](aux3) {};
+  \node[right=of aux3,myroundbox] (qv) {Query Variables\\$\bm{Q}$};
+  % row 2
+  \node[below=of aux2,myrectbox] (ie) {Inference Engine};
+  \node[below=of aux2] (ie_aux) {};
+  % row 3
+  \node[below=of ie_aux,myroundbox] (mar) {$P(\bm{Q} \mid {\bf E=e})$};
+  \node[below=of ie_aux] (mar_aux) {};
+  % row 0
+  \node[above=of aux2,yshift=-12mm] (in) {\textbf{Input}};
+  % row 4
+  \node[below=of mar_aux,yshift=10mm] (out) {\textbf{Output}};
+
+  %% edges
+  \draw[myarrow] (rv) -- (ie);
+  \draw[myarrow] (jd) -- (ie);
+  \draw[myarrow] (e)  -- (ie);
+  \draw[myarrow] (qv) -- (ie);
+  \draw[myarrow] (ie) -- (mar);
+
+\end{tikzpicture}
+

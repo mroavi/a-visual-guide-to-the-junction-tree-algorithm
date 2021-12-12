@@ -1,0 +1,306 @@
+\usepackage{tikz}
+\usetikzlibrary{fit}					% fitting shapes to coordinates
+\usetikzlibrary{backgrounds}	% drawing the background after the foreground
+\usetikzlibrary{calc, arrows, fit, positioning, patterns, decorations.pathreplacing, shapes}
+\usetikzlibrary{shadows}
+\usepackage{xifthen}
+\usetikzlibrary{arrows.meta}
+\usepackage{smartdiagram} % used in the applications slide
+
+\tikzstyle{var}=[circle,
+                 thick,
+                 draw=black!100,
+                 font=\small,
+                ]
+
+\tikzstyle{bag}=[circle,
+                 ultra thick,
+                 draw=black!100,
+                 font=\small,
+                ]
+
+\tikzstyle{hsepset}=[rectangle,
+                     minimum width=1.3cm,
+                     draw=black!100,
+                     font=\small,
+                    ]
+
+\tikzstyle{vsepset}=[rectangle,
+                     minimum width=1.3cm,
+                     draw=black!100,
+                     rotate=90,
+                     font=\small,
+                    ]
+
+\tikzstyle{msgcircle}=[shape=circle,
+                       draw,
+                       inner sep=0pt,
+                       minimum size=4mm,
+                       font=\scriptsize,
+                      ]
+
+\tikzstyle{roundrect}=[shape=rectangle,
+                       draw,
+                       rounded corners,
+                       inner sep=7pt,
+                       minimum width=22mm,
+                       minimum height=9mm,
+                       font=\footnotesize,
+                       %thick,
+                      ]
+
+% Used in the factor graph
+\tikzstyle{box} = [draw, minimum size=7.0mm]
+\tikzstyle{line} = [draw, -latex,>=latex]
+
+\newcommand{\msgcircle}[7]{
+  % Circle left arrow down
+  \ifthenelse{\isin{#1}{left} \AND \isin{#2}{down}}{
+    \coordinate (anchor) at ($({#3})!{#5}!({#4})$);
+    \node[color={#7}, msgcircle, xshift=-5.0mm] at (anchor) {#6};
+    \node[color={#7}, xshift=-1.5mm] at (anchor) {$\Big\downarrow$};
+  }{}
+  % Circle right arrow down
+  \ifthenelse{\isin{#1}{right} \AND \isin{#2}{down}}{
+    \coordinate (anchor) at ($({#3})!{#5}!({#4})$);
+    \node[color={#7}, msgcircle ,xshift=5.0mm] at (anchor) {#6};
+    \node[color={#7}, xshift=1.7mm] at (anchor) {$\Big\downarrow$};
+  }{}
+
+  % Circle down arrow right
+  \ifthenelse{\isin{#1}{down} \AND \isin{#2}{right}}{
+    \coordinate (anchor) at ($({#3})!{#5}!({#4})$);
+    \node[color={#7}, msgcircle, yshift=-5.0mm] at (anchor) {#6};
+    \node[color={#7}, yshift=-1.7mm, rotate=90] at (anchor) {$\Big\downarrow$};
+  }{}
+  % Circle up arrow right
+  \ifthenelse{\isin{#1}{up} \AND \isin{#2}{right}}{
+    \coordinate (anchor) at ($({#3})!{#5}!({#4})$);
+    \node[color={#7}, msgcircle, yshift=5.0mm] at (anchor) {#6};
+    \node[color={#7}, yshift=1.5mm, rotate=90] at (anchor) {$\Big\downarrow$};
+  }{}
+
+  % Circle down arrow left
+  \ifthenelse{\isin{#1}{down} \AND \isin{#2}{left}}{
+    \coordinate (anchor) at ($({#3})!{#5}!({#4})$);
+    \node[color={#7}, msgcircle, yshift=-5.0mm] at (anchor) {#6};
+    \node[color={#7}, yshift=-1.7mm, rotate=-90] at (anchor) {$\Big\downarrow$};
+  }{}
+  % Circle up arrow left
+  \ifthenelse{\isin{#1}{up} \AND \isin{#2}{left}}{
+    \coordinate (anchor) at ($({#3})!{#5}!({#4})$);
+    \node[color={#7}, msgcircle, yshift=5.0mm] at (anchor) {#6};
+    \node[color={#7}, yshift=1.5mm, rotate=-90] at (anchor) {$\Big\downarrow$};
+  }{}
+
+  % Circle left arrow up
+  \ifthenelse{\isin{#1}{left} \AND \isin{#2}{up}}{
+    \coordinate (anchor) at ($({#3})!{#5}!({#4})$);
+    \node[color={#7}, msgcircle, xshift=-5.0mm] at (anchor) {#6};
+    \node[color={#7}, xshift=-1.5mm, rotate=180] at (anchor) {$\Big\downarrow$};
+  }{}
+  % Circle right arrow up
+  \ifthenelse{\isin{#1}{right} \AND \isin{#2}{up}}{
+    \coordinate (anchor) at ($({#3})!{#5}!({#4})$);
+    \node[color={#7}, msgcircle, xshift=5.0mm] at (anchor) {#6};
+    \node[color={#7}, xshift=1.7mm, rotate=180] at (anchor) {$\Big\downarrow$};
+  }{}
+}
+
+% https://tex.stackexchange.com/questions/39553/how-can-i-show-coordinates-by-grid-in-tikz-automatically
+\makeatletter
+\def\grd@save@target#1{%
+  \def\grd@target{#1}}
+\def\grd@save@start#1{%
+  \def\grd@start{#1}}
+\tikzset{
+  grid with coordinates/.style={
+    to path={%
+      \pgfextra{%
+        \edef\grd@@target{(\tikztotarget)}%
+        \tikz@scan@one@point\grd@save@target\grd@@target\relax
+        \edef\grd@@start{(\tikztostart)}%
+        \tikz@scan@one@point\grd@save@start\grd@@start\relax
+        \draw[minor help lines] (\tikztostart) grid (\tikztotarget);
+        \draw[major help lines] (\tikztostart) grid (\tikztotarget);
+        \grd@start
+        \pgfmathsetmacro{\grd@xa}{\the\pgf@x/1cm}
+        \pgfmathsetmacro{\grd@ya}{\the\pgf@y/1cm}
+        \grd@target
+        \pgfmathsetmacro{\grd@xb}{\the\pgf@x/1cm}
+        \pgfmathsetmacro{\grd@yb}{\the\pgf@y/1cm}
+        \pgfmathsetmacro{\grd@xc}{\grd@xa + \pgfkeysvalueof{/tikz/grid with coordinates/major step}}
+        \pgfmathsetmacro{\grd@yc}{\grd@ya + \pgfkeysvalueof{/tikz/grid with coordinates/major step}}
+        \foreach \x in {\grd@xa,\grd@xc,...,\grd@xb}
+        \node[anchor=north] at (\x,\grd@ya) {\tiny{\pgfmathprintnumber{\x}}};
+        \foreach \y in {\grd@ya,\grd@yc,...,\grd@yb}
+        \node[anchor=east] at (\grd@xa,\y) {\tiny{\pgfmathprintnumber{\y}}};
+      }
+    }
+  },
+  minor help lines/.style={
+    help lines,
+    step=\pgfkeysvalueof{/tikz/grid with coordinates/minor step}
+  },
+  major help lines/.style={
+    help lines,
+    line width=\pgfkeysvalueof{/tikz/grid with coordinates/major line width},
+    step=\pgfkeysvalueof{/tikz/grid with coordinates/major step}
+  },
+  grid with coordinates/.cd,
+  minor step/.initial=0,
+  major step/.initial=1,
+  major line width/.initial=0.5pt,
+}
+\makeatother
+
+
+% https://tex.stackexchange.com/questions/82413/drawing-a-node-surrounding-arbitrarily-places-nodes
+% https://tex.stackexchange.com/questions/27171/padded-boundary-of-convex-hull#27185
+\usetikzlibrary{calc,trees}
+
+\newcommand{\convexpath}[2]{
+  [   
+  create hullnodes/.code={
+    \global\edef\namelist{#1}
+    \foreach [count=\counter] \nodename in \namelist {
+      \global\edef\numberofnodes{\counter}
+      \node at (\nodename) [draw=none,name=hullnode\counter] {};
+    }
+    \node at (hullnode\numberofnodes) [name=hullnode0,draw=none] {};
+    \pgfmathtruncatemacro\lastnumber{\numberofnodes+1}
+    \node at (hullnode1) [name=hullnode\lastnumber,draw=none] {};
+  },
+  create hullnodes
+  ]
+  ($(hullnode1)!#2!-90:(hullnode0)$)
+  \foreach [
+  evaluate=\currentnode as \previousnode using \currentnode-1,
+  evaluate=\currentnode as \nextnode using \currentnode+1
+  ] \currentnode in {1,...,\numberofnodes} {
+    -- ($(hullnode\currentnode)!#2!-90:(hullnode\previousnode)$)
+    let \p1 = ($(hullnode\currentnode)!#2!-90:(hullnode\previousnode) - (hullnode\currentnode)$),
+    \n1 = {atan2(\y1,\x1)},
+    \p2 = ($(hullnode\currentnode)!#2!90:(hullnode\nextnode) - (hullnode\currentnode)$),
+    \n2 = {atan2(\y2,\x2)},
+    \n{delta} = {-Mod(\n1-\n2,360)}
+    in 
+    {arc [start angle=\n1, delta angle=\n{delta}, radius=#2]}
+  }
+  -- cycle
+}
+
+% A command to create an overview of the junction tree algorithm
+% Takes 2 parameters:
+% 1. Name of the section to highlight
+% 2. Name of the subsection to highlight
+\newcommand{\pptc}[2]{
+
+  \tikzset {
+    every node/.style={node distance=1.4cm},
+    mybox/.style= {
+      rectangle,rounded corners,drop shadow,minimum height=0.7cm,font=\small,
+      minimum width=\columnwidth*0.8,align=center,fill=white,draw=gray,line width=1pt
+    },
+    myarrow/.style= { draw=gray,line width=2pt,-stealth },
+    mylabel/.style={text=black,right,xshift=2mm,text width=4.2cm,font=\small},
+    surrbox/.style={thick,draw=black,rounded corners=2mm},
+    surrboxlabel/.style={anchor=center,rotate=90,yshift=3mm,font=\small},
+  }
+
+  \begin{tikzpicture}
+
+    \ifthenelse{\equal{#1}{Probabilistic Graphical Model}}{
+      \node[mybox] (pgm) {\textbf{\alert{Probabilistic Graphical Model}}};
+    }{
+      \node[mybox] (pgm) {Probabilistic Graphical Model};
+    }
+
+    \ifthenelse{\equal{#1}{Junction Tree} }{
+      \node[mybox,below=of pgm,yshift=-0.4cm] (jts) {\textbf{\alert{Junction Tree}}};
+    }{
+      \node[mybox,below=of pgm,yshift=-0.4cm] (jts) {Junction Tree};
+    }
+
+    \ifthenelse{\equal{#1}{Inconsistent Junction Tree}}{
+      \node[mybox,below=of jts] (ijt) {\textbf{\alert{Inconsistent Junction Tree}}};
+    }{
+      \node[mybox,below=of jts] (ijt) {Inconsistent Junction Tree};
+    }
+
+    \ifthenelse{\equal{#1}{Consistent Junction Tree}}{
+      \node[mybox,below=of ijt,yshift=0.4cm] (cjt) {\textbf{\alert{Consistent Junction Tree}}};
+    }{
+      \node[mybox,below=of ijt,yshift=0.4cm] (cjt) {Consistent Junction Tree};
+    }
+
+    \ifthenelse{\equal{#1}{Consistent Junction Tree}}{
+      \node[mybox,below=of ijt,yshift=0.4cm] (cjt) {\textbf{\alert{Consistent Junction Tree}}};
+    }{
+      \node[mybox,below=of ijt,yshift=0.4cm] (cjt) {Consistent Junction Tree};
+    }
+
+    \node[below=of cjt] (mar) {$P(V \mid \bm{E=e})$};
+
+    \draw[myarrow] (pgm) -- (jts);
+    \draw[myarrow] (jts) -- (ijt);
+    \draw[myarrow] (ijt) -- (cjt);
+    \draw[myarrow] (cjt) -- (mar);
+
+    %-------------------------------------------------------------------
+
+    \ifthenelse{\equal{#2}{Moralization}}{
+      \path (pgm) -- node[mylabel] (gt) {\textbf{\alert{1. Moralization}}\\2. Triangulation\\3. Connection of clusters} (jts);
+    }{}
+
+    \ifthenelse{\equal{#2}{Triangulation}}{
+      \path (pgm) -- node[mylabel] (gt) {1. Moralization\\\textbf{\alert{2. Triangulation}}\\3. Connection of clusters} (jts);
+    }{}
+
+    \ifthenelse{\equal{#2}{Connection of clusters}}{
+      \path (pgm) -- node[mylabel] (gt) {1. Moralization\\2. Triangulation\\\textbf{\alert{3. Connection of clusters}}} (jts);
+    }{}
+
+    \ifthenelse{\not \equal{#2}{Moralization} \AND \not \equal{#2}{Triangulation} \AND \not \equal{#2}{Connection of clusters}}{
+      \path (pgm) -- node[mylabel] (gt) {1. Moralization\\2. Triangulation\\3. Connection of clusters} (jts);
+    }{}
+
+    %-------------------------------------------------------------------
+
+    \ifthenelse{\equal{#2}{Initialization}}{
+      \path (jts) -- node[mylabel] (ini) {\textbf{\alert{1. Initialization}}\\2. Observation entry} (ijt);
+    }{}
+
+    \ifthenelse{\equal{#2}{Observation entry}}{
+      \path (jts) -- node[mylabel] (ini) {1. Initialization\\\textbf{\alert{2. Observation entry}}} (ijt);
+    }{}
+
+    \ifthenelse{\not \equal{#2}{Initialization} \AND \not \equal{#2}{Observation entry}}{
+      \path (jts) -- node[mylabel] (ini) {1. Initialization\\2. Observation entry} (ijt);
+    }{}
+
+    %-------------------------------------------------------------------
+
+    \ifthenelse{\equal{#2}{Propagation}}{
+      \path (ijt) -- node[mylabel] (pro) {\textbf{\alert{Propagation}}} (cjt);
+    }{
+      \path (ijt) -- node[mylabel] (pro) {Propagation} (cjt);
+    }
+
+    %-------------------------------------------------------------------
+
+    \ifthenelse{\equal{#2}{Marginalization}}{
+      \path (cjt) -- node[mylabel] (mar-nor) {\textbf{\alert{1. Marginalization}}\\2. Normalization} (mar);
+    }{}
+
+    \ifthenelse{\equal{#2}{Normalization}}{
+      \path (cjt) -- node[mylabel] (mar-nor) {1. Marginalization\\\textbf{\alert{2. Normalization}}} (mar);
+    }{}
+
+    \ifthenelse{\not \equal{#2}{Marginalization} \AND \not \equal{#2}{Normalization}}{
+      \path (cjt) -- node[mylabel] (mar-nor) {1. Marginalization\\2. Normalization} (mar);
+    }{}
+
+  \end{tikzpicture}
+}
+

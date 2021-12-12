@@ -1,0 +1,877 @@
+%!TeX program = xelatex
+\documentclass[10pt,usenames,dvipsnames]{beamer}
+
+% https://github.com/matze/mtheme
+\usetheme[progressbar=frametitle]{metropolis}
+\usepackage{appendixnumberbeamer}
+
+% Install with fira fonts: 
+%   sudo pacman -S ttf-fira-code ttf-fira-mono ttf-fira-sans
+
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+\newcommand\blfootnote[1]{%
+\begingroup
+\renewcommand\thefootnote{}\footnote{#1}%
+\addtocounter{footnote}{-1}%
+\endgroup
+}
+
+\usepackage{xcolor-material} % https://ctan.org/pkg/xcolor-material
+\input{tikz_preamble.tex}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepackage{bm} % used to for bold letters in math environments
+\usepackage{circledsteps}
+\usepackage{ulem} % used to strike out text
+%\usepackage[table]{xcolor} % used for alternating row color
+
+\definecolor{bblue}{HTML}{2B83BA}
+\definecolor{ggreen}{HTML}{ABDDA4}
+\definecolor{rred}{HTML}{D7191C}
+\definecolor{yyellow}{HTML}{FDAE61}
+
+\colorlet{D}{MaterialGreen!40}
+\colorlet{B}{MaterialCyan!40}
+\colorlet{A}{MaterialOrange!40}
+\colorlet{F}{MaterialRed!40}
+\colorlet{C}{MaterialBlue!40}
+\colorlet{E}{MaterialPurple!40}
+
+\colorlet{BD}{GoogleBlue}
+\colorlet{ABC}{GoogleGreen}
+\colorlet{BCE}{GoogleYellow}
+\colorlet{BEF}{GoogleRed}
+
+% Source: https://www.quora.com/What-is-the-best-way-to-visualize-my-social-graph
+\definecolor{MyGreen}{HTML}{669802}
+\definecolor{MyBlue}{HTML}{046798}
+\definecolor{MyOrange}{HTML}{FC6232}
+\definecolor{MyCyan}{HTML}{8CB7CB}
+\definecolor{MyPink}{HTML}{CE7295}
+\definecolor{MyYellow}{HTML}{F19B3C}
+
+\colorlet{mygray}{gray!30}
+
+% \fbox tip:
+% - https://tex.stackexchange.com/questions/119984/subfigures-side-by-side-with-captions
+\usepackage{subcaption}
+
+\usepackage{multirow}
+
+\usepackage{booktabs}
+
+% https://tex.stackexchange.com/a/43009/23046
+\usepackage{mathtools} % provides absolute value \lvert and \rvert
+
+% How to align images:
+% - https://latex-beamer.com/tutorials/beamer-figure/
+% - use `\hfill` and `\vfill`  before/after including the images
+
+% How to scale a tikz image:
+% - https://tex.stackexchange.com/q/98134/23046
+% - `\resizebox` and `\scalebox`
+
+% Beamer table - full guide with examples
+% - https://latex-beamer.com/tutorials/beamer-table/
+
+% https://tex.stackexchange.com/questions/82413/drawing-a1-node-surrounding-arbitrarily-places-nodes
+% https://tex.stackexchange.com/questions/27171/padded-boundary-of-convex-hull#27185
+\usetikzlibrary{calc,trees}
+
+% https://openmetric.org/til/programming/latex-beamer-textblock-position/
+\usepackage[absolute,overlay]{textpos}
+
+%% Comment out to display a grid on each slide
+%\usepackage[texcoord, grid,gridcolor=red!10,subgridcolor=green!10,gridunit=pt]{eso-pic}
+
+% https://gist.github.com/andrejbauer/ac361549ac2186be0cdb
+% https://tex.stackexchange.com/a/114227/23046
+%\setbeameroption{hide notes} % Only slides
+%\setbeameroption{show only notes} % Only notes
+%\setbeameroption{show notes on second screen=right} % Both
+
+%------------------------------------------------------------------------------
+\title{The Junction Tree Algorithm}
+\subtitle{A Visual Guide}
+\date{\today}
+%\date{}
+\author{Martin Roa Villescas}
+\institute{Eindhoven University of Technology}
+\titlegraphic{\hfill\includegraphics[height=0.8cm]{figures/tue_vector_logo.pdf}}
+
+\begin{document}
+
+%------------------------------------------------------------------------------
+\maketitle
+
+%-----------------------------------------------------------------------------
+ \begin{frame}{Table of Contents}
+   \setbeamertemplate{section in toc}[sections numbered]
+   \tableofcontents[hideallsubsections]
+ \end{frame}
+
+%==============================================================================
+\section{Problem Statement}
+%==============================================================================
+
+%------------------------------------------------------------------------------
+\begin{frame}{What do these applications have in common?}
+  \begin{textblock*}{10pt}(75pt,50pt)
+    \includegraphics[width=215pt]{figures/hugin-expert/industry-applications-1.png}
+  \end{textblock*}
+  \begin{textblock*}{10pt}(75pt,150pt)
+    \includegraphics[width=215pt]{figures/hugin-expert/industry-applications-2.png}
+  \end{textblock*}
+\end{frame}
+
+\note{ 
+  BayesFraud: Our market leading solution provides insurers with advanced fraud
+  detection capabilities for fast, proactive fraud detection. Discover how to
+  protect your business and your customers from fraud by integrating the
+  predictive computing power of BayesFraud in claims handling.
+  BayesCredit: Using BayesCredit analytics, lending institutions can create
+  customized solutions to analyze and identify credit default risk. Having the
+  capability to accurately predict default risk enables lenders to reduce
+  losses due to risk, and to grow their portfolios – and profits – with peace
+  of mind. A major mortgage lending institution in Denmark has been using
+  BayesCredit analytics for over a decade to assess risk and achieve risk
+  compliance. 
+  BayesAML: Anti-money laundering and anti-terror financing The BayesAML
+  solution enables insurance companies, banks, casinos and other at-risk
+  organizations to assess their customers, products and services according to
+  risk. Implementing the real-time BayesAML tool, organizations can achieve a
+  genuine risk-based approach to anti-money laundering that can assess
+  customers and transactions and pinpoint those that are suspicious before
+  money-laundering can be executed.
+}
+
+%------------------------------------------------------------------------------
+% Set a white background
+\setbeamercolor{normal text}{%
+  fg=mDarkTeal,
+  bg=black!0 % mrv
+}
+
+\begin{frame}{Complexity and Uncertainty}
+  \centering
+  \vspace{0.5cm} % manually adjust vertical positioning
+  \includegraphics[scale=0.22]{figures/uncertainty-and-complexity/social-graph-network-visualization-by-martin-grandjean.png}
+\end{frame}
+\note{
+  - There are two problems that occur often throughout applied mathematics and
+  engineering: uncertainty and complexity.
+  - Uncertainty arises because of several reasons: e.g. limitations on the
+  availability of information, limitations in our ability to observe the world,
+  limitations in our ability to model it.
+  - On the other hand, complexity arises due to the fact that we are often
+  trying to model a system that involves many variables that interact with each
+  other.
+}
+
+%\begin{frame}{Uncertainty}
+%  \centering
+%  \vspace{0.5cm} % manually adjust vertical positioning
+%  \includegraphics[scale=0.22]{figures/uncertainty-and-complexity/random-walks.png}
+%\end{frame}
+
+% Reset metropolis' background color 
+\setbeamercolor{normal text}{%
+  fg=mDarkTeal,
+  bg=black!2
+}
+
+%==============================================================================
+\section{Probabilistic Graphical Models}
+%==============================================================================
+
+%------------------------------------------------------------------------------
+\begin{frame}{Probabilistic Graphical Models}
+  \begin{figure}
+    \centering
+    \vspace{0.0cm} % manually adjust vertical positioning
+    \scalebox{1.0}{\input{figures/pillars.tex}}
+  \end{figure}
+\end{frame}
+% TODO: include a slide with with a real example (and a useful one) where the 
+% Probabilistic graphical modeling framework would result useful.
+\note{
+  - Probability theory allows us to represent complex models compactly.
+  - Probability theory allows us to update the knowledge based on new data
+}
+
+%------------------------------------------------------------------------------
+\begin{frame}{Examples of PGMs}
+
+  \begin{columns}
+
+    % Column 1
+    \begin{column}{0.5\textwidth}
+
+      \begin{figure}
+        \scalebox{0.7}{\input{figures/bayesian-network-uncolored.tex}}
+        \caption{A Bayesian network}
+      \end{figure}
+
+      \begin{figure}
+        \scalebox{0.7}{\input{figures/factor-graph.tex}}
+        \caption{A factor graph}
+      \end{figure}
+
+    \end{column}
+
+    % Column 2    
+    \begin{column}{0.5\textwidth}
+
+      \begin{figure}
+        \scalebox{0.7}{\input{figures/markov-random-field.tex}}
+        \caption{A Markov random field}
+      \end{figure}
+
+    \end{column}
+
+  \end{columns}
+
+\end{frame}
+
+
+%%------------------------------------------------------------------------------
+%% https://data-flair.training/blogs/bayesian-network-applications/
+%\begin{frame}{Applications of Bayesian Inference}
+%  \begin{figure}
+%    \vspace{0.5cm} % manually adjust vertical positioning
+%    \scalebox{0.55}{\input{figures/applications.tex}}
+%  \end{figure}
+%\end{frame}
+
+%%------------------------------------------------------------------------------
+%% https://data-flair.training/blogs/bayesian-network-applications/
+%\begin{frame}{A General Framework}
+%  \begin{figure}
+%    \vspace{0.5cm} % manually adjust vertical positioning
+%    \scalebox{0.8}{\input{figures/instances-of-pgms.tex}}
+%  \end{figure}
+%\end{frame}
+%\note{
+%  - Many classical algorithms studied in fields such as statistics, systems
+%  engineering, information theory, pattern recognition and statistical mechanics
+%  are special cases of the general graphical model formalism – this slide shows
+%  examples. (click)
+%  - This has many advantages – in particular, specialized techniques that have
+%  been developed in one field can be transferred between research communities and
+%  exploited more widely.
+%}
+
+%==============================================================================
+\section{Bayesian Inference}
+%==============================================================================
+
+%%------------------------------------------------------------------------------
+%\begin{frame}{Bayesian Inference}
+%  \begin{figure}
+%    \vspace{0.5cm} % manually adjust vertical positioning
+%    \includegraphics[scale=0.13]{figures/reverend-thomas-bayes.jpg}
+%  \end{figure}
+%\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}{The Inference Problem}
+  \begin{small}
+    \begin{quote} 
+      Given a set of \textbf{random variables} $\mathcal{V}$ and their
+      \textbf{joint distribution} $P(\mathcal{V})$,\\ compute one or more conditional
+      distributions given observations.
+    \end{quote}
+  \end{small}
+\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}{The Inference Problem}
+  \begin{figure}
+    \vspace{0.5cm} % manually adjust vertical positioning
+    \scalebox{0.7}{\input{figures/the-inference-problem.tex}}
+  \end{figure}
+  %\begin{footnotesize}
+  %  \begin{columns}[T]
+  %    % Column 1
+  %    \begin{column}{0.5\textwidth}
+  %      \textbf{Input}
+  %      \begin{itemize}
+  %        \item A set of random variables $\mathcal{V}$
+  %        \item A joint probability distribution over $\mathcal{V}$
+  %          \[ P(\mathcal{V}) = \prod_{V\in\mathcal{V}} P(V \mid pa(V)) \]
+  %        \item An evidence assignment $\bm{E=e}$ 
+  %        \item A set of query variables $\bm{Q}$ 
+  %      \end{itemize}
+  %    \end{column}
+  %    % Column 2
+  %    \begin{column}{0.5\textwidth}
+  %      \textbf{Output}
+  %      \begin{itemize} \item The conditional distribution $P(\bm{Q} \mid
+  %        {\bf E=e})$ given the evidence $\bm{e}$ 
+  %      \end{itemize}
+  %    \end{column}
+  %  \end{columns}
+  %\end{footnotesize}
+\end{frame}
+
+%==============================================================================
+\section{The Junction Tree Algorithm}
+%==============================================================================
+
+%------------------------------------------------------------------------------
+\begin{frame}{The Junction Tree Algorithm}
+    \begin{quote} 
+      The \textbf{junction tree algorithm} is an efficient method to perform
+      \textit{Bayesian inference} in general graphs.
+    \end{quote}
+\end{frame}
+
+%------------------------------------------------------------------------------
+% https://data-flair.training/blogs/bayesian-network-applications/
+\begin{frame}{The Junction Tree Algorithm in Practice}
+  \begin{textblock*}{10pt}(30pt,140pt)
+    \includegraphics[width=60pt]{figures/hugin-expert/hugin-expert.png}
+  \end{textblock*}
+  \begin{textblock*}{10pt}(120pt,50pt)
+    \includegraphics[width=215pt]{figures/hugin-expert/industry-applications-1.png}
+  \end{textblock*}
+  \begin{textblock*}{10pt}(120pt,150pt)
+    \includegraphics[width=215pt]{figures/hugin-expert/industry-applications-2.png}
+  \end{textblock*}
+  \only<2>{
+    \begin{textblock*}{60pt}(30pt,160pt)
+      \scriptsize
+      \includegraphics[width=60pt]{figures/hugin-expert/lauritzen.png}
+      \textbf{ Steffen Lauritzen}\\Chairman
+    \end{textblock*}
+  }
+\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}{Overview of the Junction Tree Algorithm}
+  \begin{figure}
+    \vspace{0.6cm} % manually adjust vertical positioning
+    \scalebox{0.7}{\pptc{}{}}
+  \end{figure}
+  \only<2->{
+    \begin{textblock*}{1pt}(280pt,45pt)
+      \scalebox{0.35}{\input{figures/bayesian-network.tex}}
+    \end{textblock*}
+  }
+  \only<3->{
+    \begin{textblock*}{1pt}(280pt,95pt)
+      \scalebox{0.2}{\input{figures/junction-tree.tex}}
+    \end{textblock*}
+  }
+  \only<4->{
+    \begin{textblock*}{1pt}(280pt,139pt)
+      \scalebox{0.2}{\input{figures/junction-tree-initialized.tex}}
+    \end{textblock*}
+  }
+  \only<5->{
+    \begin{textblock*}{1pt}(280pt,176pt)
+      \scalebox{0.2}{\input{figures/consistent-junction-tree.tex}}
+    \end{textblock*}
+  }
+\end{frame}
+
+%==============================================================================
+\subsection{Probabilistic Graphical Model}
+%==============================================================================
+
+%------------------------------------------------------------------------------
+\begin{frame}{Overview}
+  \begin{figure}
+    \vspace{0.6cm} % manually adjust vertical positioning
+    \scalebox{0.7}{\pptc{Probabilistic Graphical Model}{}}
+  \end{figure}
+\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}{Probabilistic Graphical Model}
+
+  \begin{columns}
+
+    % Column 1
+    \begin{column}{0.6\textwidth}
+
+      \begin{block}{Joint probability distribution}
+        \begin{align*}
+        &P(\mathcal{V}) = \prod_{V\in\mathcal{V}} P(V \mid pa(V))&
+        \end{align*}
+      \end{block}
+      \begin{block}{Conditional probability distribution}
+        \begin{table}
+          $P(\textcolor{MaterialCyan}{B} \mid A)$ = 
+          \begin{tabular}{ c|c c } 
+            & \multicolumn{2}{|c}{$P(b \mid a)$} \\
+            $a$ & yes & no \\ 
+            \hline
+            yes & 0.1 & 0.5 \\ 
+            no & 0.4 & 0.3 \\ 
+          \end{tabular}
+          \hfill
+        \end{table}
+      \end{block}
+
+      %\begin{block}{Joint probability distribution}
+      %  \begin{align*}
+      %    &P(\mathcal{V}) = \prod_{V\in\mathcal{V}} P(V \mid pa(V))&
+      %  \end{align*}
+      %\end{block}
+
+    \end{column}
+
+    % Column 2    
+    \begin{column}{0.4\textwidth}
+
+      \begin{figure}
+        \scalebox{0.8}{\input{figures/bayesian-network.tex}}
+        \caption{A Bayesian network\footnotemark}
+      \end{figure}
+
+    \end{column}
+
+  \end{columns}
+  \footnotetext{Example borrowed from Mark A. Paskin - A Short Course on Graphical Models}
+\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}{Starting Point}
+  \begin{figure}
+    \scalebox{1.0}{\input{figures/bayesian-network.tex}}
+    \caption{A Bayesian network}
+  \end{figure}
+\end{frame}
+
+%==============================================================================
+\subsection{Moralization}
+%==============================================================================
+
+%------------------------------------------------------------------------------
+\begin{frame}{Overview}
+  \begin{figure}
+    \vspace{0.6cm} % manually adjust vertical positioning
+    \scalebox{0.7}{\pptc{Probabilistic Graphical Model}{Moralization}}
+  \end{figure}
+\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}{Moralization}
+  \centering
+  {\footnotesize Marry the parents of each variable and drop the directions of the edges.}
+  \begin{figure}[h]  
+    \begin{subfigure}[b]{0.49\linewidth}
+      \centering
+      \scalebox{1.0}{\input{figures/bayesian-network.tex}}
+      %\resizebox{\textwidth}{!}{\input{figures/bayesian-network.tex}}
+      \caption{Bayesian network}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\linewidth}
+      \centering
+      \scalebox{1.0}{\input{figures/moral-graph-with-arrow.tex}}
+      %\resizebox{\textwidth}{!}{\input{figures/moral-graph.tex}}
+      \caption{Moral graph}
+    \end{subfigure}
+    \caption{Moralization}
+  \end{figure}  
+\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}{Moralization}
+  \begin{figure}
+    \scalebox{1.0}{\input{figures/moral-graph.tex}}
+    \caption{Moral Graph}
+  \end{figure}
+\end{frame}
+
+%==============================================================================
+\subsection{Triangulation}
+%==============================================================================
+
+%------------------------------------------------------------------------------
+\begin{frame}{Overview}
+  \begin{figure}
+    \vspace{0.6cm} % manually adjust vertical positioning
+    \scalebox{0.7}{\pptc{Probabilistic Graphical Model}{Triangulation}}
+  \end{figure}
+\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}{Triangulation}
+  \centering
+  {\footnotesize
+    \only<1>{
+      Consists of removing every cycle of length greater than three in a graph.
+    }
+    \only<2>{
+      We do so by connecting two nonadjacent nodes in every cycle of length $>$ three.
+    }
+    \only<3-4>{
+      An optimal triangulation minimizes the sum of the state space sizes of the cliques.
+    }
+    \only<4>{
+      This is equivalent to minimizing the size of the largest clique.
+    }
+    \only<5>{
+      This problem is \textit{NP-complete}.
+    }
+  }
+
+  \begin{figure}[h]  
+    \begin{subfigure}[b]{0.49\linewidth}
+      \centering
+      \scalebox{1.0}{\input{figures/moral-graph.tex}}
+      %\resizebox{\textwidth}{!}{\input{figures/moral-graph.tex}}
+      \caption{Moral graph}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\linewidth}
+      \centering
+      \scalebox{1.0}{\input{figures/triangulated-graph-with-arrow.tex}}
+      %\resizebox{\textwidth}{!}{\input{figures/triangulated-graph.tex}}
+      \caption{Triangulated graph}
+    \end{subfigure}
+    \caption{Triangulation}
+  \end{figure}
+\end{frame}
+\note{
+  - This is the hardest of all steps. And when I say hard, I mean it literally.
+  This problem is NP-hard.
+  - The goal is to get rid of all cycles of length greater than 3!
+  - Note that a byproduct of triangulation is the set of maximal cliques of the
+  triangulated graph, which are extremely useful for the junction algorithm:
+  these maximal cliques become the nodes of the final junction tree.
+  - The overall goal is to minimize the state space size of the system.
+  - This is equivalent to minimizing the number of vars in the largest
+  clique/cluster.
+  - The enclosed sets of nodes are maximal cliques which, in this case, become
+  the clusters of the junction tree.
+  - A clique is a set of variables in which all variables are connected to each
+  other.
+  - A maximal clique is a one that is not contained in a larger one.
+}
+
+%------------------------------------------------------------------------------
+\input{figures/triangulated-graph-min-fill.tex}
+
+%------------------------------------------------------------------------------
+\begin{frame}{Triangulated Graph}
+    \begin{figure}
+        \scalebox{1.0}{\input{figures/triangulated-graph.tex}}
+        \caption{Triangulated graph with its set of maximal cliques}
+    \end{figure}
+\end{frame}
+
+%==============================================================================
+\subsection{Connection of Clusters}
+%==============================================================================
+
+%------------------------------------------------------------------------------
+\begin{frame}{Overview}
+  \begin{figure}
+    \vspace{0.6cm} % manually adjust vertical positioning
+    \scalebox{0.7}{\pptc{Probabilistic Graphical Model}{Connection of clusters}}
+  \end{figure}
+\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}{Connection of Clusters}
+  \centering
+  {\footnotesize
+    \only<1>{
+      Consists of transforming the triangulated graph into a \textit{junction tree}.
+    }
+    \only<2>{
+      A junction tree is a tree that satisfies the \textit{running intersection
+      property}:\\
+      \textit{All clusters on the path between two given clusters contain their
+      common variables.}
+    }
+    \only<3>{
+      We now present an \textit{optimal} algorithm to perform this transformation
+      \cite{jensen2013optimal}.
+    }
+    \only<4>{
+      The clusters of the triangulated graphs correspond to the nodes of the
+      junction tree.
+    }
+  }
+  \begin{figure}
+    \begin{subfigure}[b]{0.41\textwidth}
+      \centering
+      \scalebox{0.8}{\input{figures/triangulated-graph.tex}}
+      %\resizebox{\textwidth}{!}{\input{figures/complete-cluster-graph.tex}}
+      \caption{Triangulated graph}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.58\textwidth}
+      \centering
+      %\scalebox{1.0}{\input{figures/junction-tree.tex}}
+      \resizebox{\textwidth}{!}{\input{figures/junction-tree.tex}}
+      \caption{Junction tree}
+    \end{subfigure}
+    \caption{Junction tree construction from a triangulated graph}
+  \end{figure}
+\end{frame}
+
+%------------------------------------------------------------------------------
+\input{figures/connection-of-clusters.tex}
+
+%------------------------------------------------------------------------------
+\begin{frame}{Junction Tree}
+    \begin{figure}
+        \scalebox{0.9}{\input{figures/junction-tree.tex}}
+        \caption{Junction tree}
+    \end{figure}
+\end{frame}
+
+%==============================================================================
+\subsection{Junction Tree}
+%==============================================================================
+
+%==============================================================================
+\subsection{initialization}
+%==============================================================================
+
+%------------------------------------------------------------------------------
+\begin{frame}{Overview}
+  \begin{figure}
+    \vspace{0.6cm} % manually adjust vertical positioning
+    \scalebox{0.7}{\pptc{Junction Tree}{Initialization}}
+  \end{figure}
+\end{frame}
+
+%------------------------------------------------------------------------------
+% TODO: include the CPD table here
+\begin{frame}{Initialization}
+  \centering
+  {\footnotesize
+    Multiply each conditional probability distribution $P(V \mid pa(V))$\\
+    into a cluster potential that contains its variables.
+  }
+  \begin{figure}
+    \begin{subfigure}[b]{0.41\textwidth}
+      \centering
+      \scalebox{0.8}{\input{figures/bayesian-network.tex}}
+      %\resizebox{\textwidth}{!}{\input{figures/bayesian-network.tex}}
+      \caption{Bayesian network}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.58\textwidth}
+      \centering
+      %\scalebox{1.0}{\input{figures/junction-tree-initialized.tex}}
+      \resizebox{\textwidth}{!}{\input{figures/junction-tree-initialized.tex}}
+      \caption{Initialized junction tree}
+    \end{subfigure}
+    \caption{Initialization}
+  \end{figure}
+\end{frame}
+
+%==============================================================================
+\subsection{Observation Entry}
+%==============================================================================
+
+%------------------------------------------------------------------------------
+\begin{frame}{Overview}
+  \begin{figure}
+    \vspace{0.6cm} % manually adjust vertical positioning
+    \scalebox{0.7}{\pptc{Junction Tree}{Observation entry}}
+  \end{figure}
+\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}{Observation Entry}
+  \centering
+  {\footnotesize
+    Suppose that $E$ is an observed variable and that\\
+    the table below is the \textit{factor} associated to cluster $BEF$.
+  }
+  \begin{table}
+    \scalebox{0.8}{
+      \begin{tabular}{ccc|c} \toprule
+        %\multicolumn{4}{c}{$P(F \mid B,C)$} \\ \midrule
+        $F$ & $B$ & $E$ & Element \\ \midrule
+        0   & 0   & 0   & 0.25            \\
+        0   & 0   & 1   & 0.35            \\
+        0   & 1   & 0   & 0.08            \\
+        0   & 1   & 1   & 0.16            \\
+        1   & 0   & 0   & 0.05            \\
+        1   & 0   & 1   & 0.07            \\
+        1   & 1   & 0   & 0.00            \\
+        1   & 1   & 1   & 0.00            \\
+        2   & 0   & 0   & 0.15            \\
+        2   & 0   & 1   & 0.21            \\
+        2   & 1   & 0   & 0.09            \\
+        2   & 1   & 1   & 0.18            \\
+        \hline
+    \end{tabular}}
+    %\caption{Conditional Probability Distribution of $F$}
+  \end{table}
+\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}{Observation Entry}
+  \centering
+  {\footnotesize
+    Now suppose that we observe that $E=0$.\\
+    We enter this observation by zeroing all entries that do not agree with the
+    evidence.  
+  }
+  \begin{table}
+    \scalebox{0.8}{
+      \begin{tabular}{ccc|c} \toprule
+        $F$ & $B$ & $E$ & $\phi(F,B,E)$ \\ \midrule
+        0   & 0   & 0   & 0.25            \\
+        0   & 0   & 1   & \alert{0.00}            \\
+        0   & 1   & 0   & 0.08            \\
+        0   & 1   & 1   & \alert{0.00}            \\
+        1   & 0   & 0   & 0.05            \\
+        1   & 0   & 1   & \alert{0.00}            \\
+        1   & 1   & 0   & 0.00            \\
+        1   & 1   & 1   & \alert{0.00}            \\
+        2   & 0   & 0   & 0.15            \\
+        2   & 0   & 1   & \alert{0.00}            \\
+        2   & 1   & 0   & 0.09            \\
+        2   & 1   & 1   & \alert{0.00}            \\
+        \hline
+    \end{tabular}}
+    %\caption{Conditional Probability Distribution of $F$}
+  \end{table}
+\end{frame}
+
+%==============================================================================
+\subsection{Inconsistent Junction Tree}
+%==============================================================================
+
+%==============================================================================
+\subsection{Propagation}
+%==============================================================================
+
+%------------------------------------------------------------------------------
+\begin{frame}{Overview}
+  \begin{figure}
+    \vspace{0.6cm} % manually adjust vertical positioning
+    \scalebox{0.7}{\pptc{Inconsistent Junction Tree}{Propagation}}
+  \end{figure}
+\end{frame}
+
+%------------------------------------------------------------------------------
+\input{figures/message-passing.tex}
+
+%==============================================================================
+\subsection{Consistent Junction Tree}
+%==============================================================================
+
+%==============================================================================
+\subsection{Marginalization}
+%==============================================================================
+
+%------------------------------------------------------------------------------
+\begin{frame}{Overview}
+  \begin{figure}
+    \vspace{0.6cm} % manually adjust vertical positioning
+    \scalebox{0.7}{\pptc{Consistent Junction Tree}{Marginalization}}
+  \end{figure}
+\end{frame}
+
+%------------------------------------------------------------------------------
+\input{figures/marginalization.tex}
+
+%==============================================================================
+\subsection{Normalization}
+%==============================================================================
+
+%------------------------------------------------------------------------------
+\begin{frame}{Overview}
+  \begin{figure}
+    \vspace{0.6cm} % manually adjust vertical positioning
+    \scalebox{0.7}{\pptc{Consistent Junction Tree}{Normalization}}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Normalization}
+  \centering
+  {\footnotesize
+    The last step is to compute $P(V \mid \bm{E=e})$ for each variable of interest
+    $V$.
+
+    We do so by normalizing $P(V, \bm{E=e})$, e.i.
+    \[
+      P(V \mid {\bf E=e}) = \frac{P(V, {\bf E=e})}{P({\bf E=e})} = \frac{P(V, {\bf E=e})}{\sum_{V} P(V, {\bf E=e})}.
+    \]
+
+    For example,
+  }
+
+  \begin{columns}
+
+    % Column 1
+    \begin{column}{0.5\textwidth}
+      \begin{table}
+        \scalebox{0.8}{
+          \hspace{100pt}
+          \begin{tabular}{c|c}
+            $V$ & $\phi(V,\bm{E=e})$ \\ \midrule
+            0   & 0.25            \\
+            1   & 0.05            \\
+            2   & 0.15            \\
+        \end{tabular}}
+      \end{table}
+    \end{column}
+
+    \begin{column}{0.1\textwidth}
+      $\rightarrow$
+    \end{column}
+    
+    % Column 2
+    \begin{column}{0.5\textwidth}
+      \begin{table}
+        \scalebox{0.8}{
+          \hspace{-100pt}
+          \begin{tabular}{c|c}
+            $V$ & $P(V \mid \bm{E=e})$ \\ \midrule
+            0   & 0.55            \\
+            1   & 0.11            \\
+            2   & 0.33            \\
+        \end{tabular}}
+      \end{table}
+    \end{column}
+
+  \end{columns}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+% \section{Section}
+
+% \begin{frame}{Commit}
+% \end{frame}
+
+%------------------------------------------------------------------------------
+%{\setbeamercolor{palette primary}{fg=black, bg=yellow}
+{\setbeamercolor{palette primary}{}
+\begin{frame}[standout]
+  The End
+\end{frame}
+}
+
+%%-----------------------------------------------------------------------------
+%% Include 'backup' slides after the next call
+%\appendix
+
+% TODO: add an appendix with factor operations
+
+%------------------------------------------------------------------------------
+\begin{frame}[allowframebreaks]{References}
+  \nocite{*}
+  \bibliography{bibliography}
+  \bibliographystyle{abbrv}
+\end{frame}
+
+\end{document}

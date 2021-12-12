@@ -1,0 +1,3084 @@
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+{\footnotesize
+  We will now demonstrate the \textbf{min-fill algorithm} \cite{Kjærulff90triangulationof}:
+  A greedy, polynomial-time \textit{heuristic} that produces high-quality
+  triangulations in real-world settings.
+}
+
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                   &
+                                                   &
+    \node (d1)   [var, minimum size=0.7cm] {$D$};  &
+                                                   &
+                                                  \\
+    % Second line
+                                                   &
+    \node (b1)   [var, minimum size=0.7cm] {$B$};  &
+                                                   &
+                                                   &
+                                                  \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A$};    &
+                                                   &
+                                                   &
+    \node (f1) [var, minimum size=0.7cm] {$F$};    &
+                                                  \\
+    % Forth line
+                                                   &
+    \node (c1)   [var, minimum size=0.7cm] {$C$};  &
+    \node (e1)   [var, minimum size=0.7cm] {$E$};  &
+                                                   &
+                                                  \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  %\draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+{\footnotesize Subscripts denote the variable's \textit{cardinality}.}
+
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d1)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+    \node (f1) [var, minimum size=0.7cm] {$F_3$};    &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  %\draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+{\footnotesize Make a copy of the graph.}
+
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d1)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+    \node (f1) [var, minimum size=0.7cm] {$F_3$};    &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  %\draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d2)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+    \node (f2) [var, minimum size=0.7cm] {$F_3$};    &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  \draw (b2) edge (d2);
+  \draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  \draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+{\footnotesize Select a node in the left graph according to the criterion described below.}
+
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                           &
+                                                           &
+    \node (d1)   [var, minimum size=0.7cm] {$D_7$};        &
+                                                           &
+                                                          \\
+    % Second line
+                                                           &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};        &
+                                                           &
+                                                           &
+                                                          \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};          &
+                                                           &
+                                                           &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};  &
+                                                          \\
+    % Forth line
+                                                           &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};        &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};        &
+                                                           &
+                                                          \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  %\draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d2)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+    \node (f2) [var, minimum size=0.7cm] {$F_3$};    &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  \draw (b2) edge (d2);
+  \draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  \draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+{\footnotesize 
+  The selected variable and its neighbors form a \textit{cluster}.\\
+  Connect all the nodes in the cluster (in this case they are already
+  connected).
+}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d2)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f2) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};          &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  \draw (b2) edge (d2);
+  \draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  \draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  \draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d1)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+    \node (f1) [var, minimum size=0.7cm] {$F_3$};    &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  %\draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+{\footnotesize 
+  Copy the cluster with the added edges to the right graph\\
+  \textit{only if} it is not contained inside an already copied cluster.
+}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d2)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f2) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};          &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  \draw (b2) edge (d2);
+  \draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  \draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  \draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d1)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+    \node (f1) [var, minimum size=0.7cm] {$F_3$};    &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  %\draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+{\footnotesize 
+  Copy the cluster with the added edges to the right graph\\
+  \textit{only if} it is not contained inside an already copied cluster.
+}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d2)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f2) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};          &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  \draw (b2) edge (d2);
+  \draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  \draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  \draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                           &
+                                                           &
+    \node (d1)   [var, minimum size=0.7cm] {$D_7$};        &
+                                                           &
+                                                          \\
+    % Second line
+                                                           &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};        &
+                                                           &
+                                                           &
+                                                          \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};          &
+                                                           &
+                                                           &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};  &
+                                                          \\
+    % Forth line
+                                                           &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};        &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};        &
+                                                           &
+                                                          \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+{\footnotesize Remove $F$ from the left graph.}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d2)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+                                                     &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  \draw (b2) edge (d2);
+  %\draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  %\draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                           &
+                                                           &
+    \node (d1)   [var, minimum size=0.7cm] {$D_7$};        &
+                                                           &
+                                                          \\
+    % Second line
+                                                           &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};        &
+                                                           &
+                                                           &
+                                                          \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};          &
+                                                           &
+                                                           &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};  &
+                                                          \\
+    % Forth line
+                                                           &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};        &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};        &
+                                                           &
+                                                          \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                 & BEF             & none        \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+{\footnotesize Repeat until there are no nodes left in the left graph.}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d2)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+                                                     &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  \draw (b2) edge (d2);
+  %\draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  %\draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                           &
+                                                           &
+    \node (d1)   [var, minimum size=0.7cm] {$D_7$};        &
+                                                           &
+                                                          \\
+    % Second line
+                                                           &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};        &
+                                                           &
+                                                           &
+                                                          \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};          &
+                                                           &
+                                                           &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};  &
+                                                          \\
+    % Forth line
+                                                           &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};        &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};        &
+                                                           &
+                                                          \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                 & BEF             & none        \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+{\footnotesize
+  Node selection criterion: 
+  {\scriptsize
+  \begin{itemize}
+    \item Select the node that causes the \textit{least} number of edges to be
+      added in the cluster.
+    \item Break ties by choosing the node that induces the cluster with the
+      \textit{smallest} state space size.
+  \end{itemize}
+  }
+}
+
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d1)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+    \node (f1) [var, minimum size=0.7cm] {$F_3$};    &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  %\draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d2)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+    \node (f2) [var, minimum size=0.7cm] {$F_3$};    &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  \draw (b2) edge (d2);
+  \draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  \draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+{\footnotesize
+  Selecting which node causes the least $\#$ of edges to be added in the
+  induced cluster?
+}
+
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d1)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+    \node (f1) [var, minimum size=0.7cm] {$F_3$};    &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  %\draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d2)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+    \node (f2) [var, minimum size=0.7cm] {$F_3$};    &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  \draw (b2) edge (d2);
+  \draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  \draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%% 
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+{\footnotesize Tie.}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d2)   [var, minimum size=0.7cm, fill=D] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f2) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};          &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  \draw (b2) edge (d2);
+  \draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  \draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  \draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  \draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d1)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+    \node (f1) [var, minimum size=0.7cm] {$F_3$};    &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  %\draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%% 
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+{\footnotesize Then which of the two clusters has a smaller state space size?}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d2)   [var, minimum size=0.7cm, fill=D] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f2) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};          &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  \draw (b2) edge (d2);
+  \draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  \draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  \draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  \draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d1)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+    \node (f1) [var, minimum size=0.7cm] {$F_3$};    &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  %\draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+{\footnotesize $ \lvert BEF \rvert < \lvert BD \rvert $, therefore $F$ wins.}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d2)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f2) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};          &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  \draw (b2) edge (d2);
+  \draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  \draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  \draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  \draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d1)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+    \node (f1) [var, minimum size=0.7cm] {$F_3$};    &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  %\draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+{\footnotesize 
+  Back to where we were.\\
+  Repeat until there are no nodes left in the left graph.
+}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d2)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+                                                     &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  \draw (b2) edge (d2);
+  %\draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  %\draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                           &
+                                                           &
+    \node (d1)   [var, minimum size=0.7cm] {$D_7$};        &
+                                                           &
+                                                          \\
+    % Second line
+                                                           &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};        &
+                                                           &
+                                                           &
+                                                          \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};          &
+                                                           &
+                                                           &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};  &
+                                                          \\
+    % Forth line
+                                                           &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};        &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};        &
+                                                           &
+                                                          \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                 & BEF             & none        \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+{\footnotesize
+  Selecting which node causes the least $\#$ of edges to be added in the
+  induced cluster?
+}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+    \node (d2)   [var, minimum size=0.7cm] {$D_7$};  &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+                                                     &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  \draw (b2) edge (d2);
+  %\draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  %\draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                           &
+                                                           &
+    \node (d1)   [var, minimum size=0.7cm] {$D_7$};        &
+                                                           &
+                                                          \\
+    % Second line
+                                                           &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};        &
+                                                           &
+                                                           &
+                                                          \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};          &
+                                                           &
+                                                           &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};  &
+                                                          \\
+    % Forth line
+                                                           &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};        &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};        &
+                                                           &
+                                                          \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                 & BEF             & none        \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+%{\footnotesize Text.}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d2)   [var, minimum size=0.7cm, fill=D] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+                                                             &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};          &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  \draw (b2) edge (d2);
+  %\draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  %\draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  \draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                           &
+                                                           &
+    \node (d1)   [var, minimum size=0.7cm] {$D_7$};        &
+                                                           &
+                                                          \\
+    % Second line
+                                                           &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};        &
+                                                           &
+                                                           &
+                                                          \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};          &
+                                                           &
+                                                           &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};  &
+                                                          \\
+    % Forth line
+                                                           &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};        &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};        &
+                                                           &
+                                                          \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                 & BEF             & none        \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+%{\footnotesize Text.}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d2)   [var, minimum size=0.7cm, fill=D] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+                                                             &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};          &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  \draw (b2) edge (d2);
+  %\draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  %\draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  \draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d1)   [var, minimum size=0.7cm, fill=D] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};          &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  \draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                 & BEF             & none        \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+%{\footnotesize Text.}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+                                                     &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+                                                     &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};  &
+    \node (e2)   [var, minimum size=0.7cm] {$E_2$};  &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  %\draw (b2) edge (d2);
+  %\draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  %\draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d1)   [var, minimum size=0.7cm, fill=D] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};          &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  \draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                          & BEF                      & none                 \\
+%  D                          & BD                       & none                 \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+%{\footnotesize Text.}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+                                                             &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+                                                             &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e2)   [var, minimum size=0.7cm, fill=E] {$E_2$};  &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  %\draw (b2) edge (d2);
+  %\draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  %\draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  \draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d1)   [var, minimum size=0.7cm, fill=D] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};          &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  \draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                          & BEF                      & none                 \\
+%  D                          & BD                       & none                 \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+%{\footnotesize Text.}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+                                                             &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+                                                             &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e2)   [var, minimum size=0.7cm, fill=E] {$E_2$};  &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  \draw (b2) edge (c2);
+  %\draw (b2) edge (d2);
+  %\draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  %\draw (e2) edge (f2);
+
+  \path (b2) -- node[anchor=center,xshift=-0.25cm,yshift=-0.0cm] (bc) {$\rightarrow$} (c2);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  \draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d1)   [var, minimum size=0.7cm, fill=D] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e1)   [var, minimum size=0.7cm] {$E_2$};          &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  %\draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  \draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                          & BEF                      & none                 \\
+%  D                          & BD                       & none                 \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+%{\footnotesize Text.}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+                                                             &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+                                                             &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e2)   [var, minimum size=0.7cm, fill=E] {$E_2$};  &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  \draw (b2) edge (c2);
+  %\draw (b2) edge (d2);
+  %\draw (b2) edge (f2);
+  \draw (b2) edge (e2);
+  \draw (c2) edge (e2);
+  %\draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  \draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d1)   [var, minimum size=0.7cm, fill=D] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e1)   [var, minimum size=0.7cm, fill=E] {$E_2$};  &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  \draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  \draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  \draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                          & BEF                      & none                 \\
+%  D                          & BD                       & none                 \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+%{\footnotesize Text.}
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+                                                     &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+                                                     &
+                                                    \\
+    % Forth line
+                                                     &
+    \node (c2)   [var, minimum size=0.7cm] {$C_3$};  &
+                                                     &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  \draw (b2) edge (c2);
+  %\draw (b2) edge (d2);
+  %\draw (b2) edge (f2);
+  %\draw (b2) edge (e2);
+  %\draw (c2) edge (e2);
+  %\draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d1)   [var, minimum size=0.7cm, fill=D] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e1)   [var, minimum size=0.7cm, fill=E] {$E_2$};  &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  \draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  \draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  \draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                          & BEF                      & none                 \\
+%  D                          & BD                       & none                 \\
+%  E                          & BEC                      & (B,C)                \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+%{\footnotesize Text.
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+                                                             &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+                                                             &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c2)   [var, minimum size=0.7cm, fill=C] {$C_3$};  &
+                                                             &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  \draw (b2) edge (c2);
+  %\draw (b2) edge (d2);
+  %\draw (b2) edge (f2);
+  %\draw (b2) edge (e2);
+  %\draw (c2) edge (e2);
+  %\draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  \draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d1)   [var, minimum size=0.7cm, fill=D] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e1)   [var, minimum size=0.7cm, fill=E] {$E_2$};  &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  \draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  \draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  \draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                          & BEF                      & none                 \\
+%  D                          & BD                       & none                 \\
+%  E                          & BEC                      & (B,C)                \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+%{\footnotesize Text.
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+                                                             &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+                                                             &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c2)   [var, minimum size=0.7cm, fill=C] {$C_3$};  &
+                                                             &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a2) edge (b2);
+  \draw (a2) edge (c2);
+  \draw (b2) edge (c2);
+  %\draw (b2) edge (d2);
+  %\draw (b2) edge (f2);
+  %\draw (b2) edge (e2);
+  %\draw (c2) edge (e2);
+  %\draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  \draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d1)   [var, minimum size=0.7cm, fill=D] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c1)   [var, minimum size=0.7cm] {$C_3$};          &
+    \node (e1)   [var, minimum size=0.7cm, fill=E] {$E_2$};  &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  \draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  \draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  \draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  \draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                          & BEF                      & none                 \\
+%  D                          & BD                       & none                 \\
+%  E                          & BEC                      & (B,C)                \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+%{\footnotesize Text.
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                     &
+                                                     &
+                                                     &
+                                                     &
+                                                    \\
+    % Second line
+                                                     &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};  &
+                                                     &
+                                                     &
+                                                    \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm] {$A_4$};    &
+                                                     &
+                                                     &
+                                                     &
+                                                    \\
+    % Forth line
+                                                     &
+                                                     &
+                                                     &
+                                                     &
+                                                    \\
+  };
+
+  \draw (a2) edge (b2);
+  %\draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  %\draw (b2) edge (d2);
+  %\draw (b2) edge (f2);
+  %\draw (b2) edge (e2);
+  %\draw (c2) edge (e2);
+  %\draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d1)   [var, minimum size=0.7cm, fill=D] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c1)   [var, minimum size=0.7cm, fill=C] {$C_3$};  &
+    \node (e1)   [var, minimum size=0.7cm, fill=E] {$E_2$};  &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  \draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  \draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  \draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  \draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                          & BEF                      & none                 \\
+%  D                          & BD                       & none                 \\
+%  E                          & BEC                      & (B,C)                \\
+%  C                          & ABC                      & none                 \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+%{\footnotesize Text.
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                           &
+                                                           &
+                                                           &
+                                                           &
+                                                          \\
+    % Second line
+                                                           &
+    \node (b2)   [var, minimum size=0.7cm] {$B_4$};        &
+                                                           &
+                                                           &
+                                                          \\
+    % Third line
+    \node (a2) [var, minimum size=0.7cm, fill=A] {$A_4$};  &
+                                                           &
+                                                           &
+                                                           &
+                                                          \\
+    % Forth line
+                                                           &
+                                                           &
+                                                           &
+                                                           &
+                                                          \\
+  };
+
+  \draw (a2) edge (b2);
+  %\draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  %\draw (b2) edge (d2);
+  %\draw (b2) edge (f2);
+  %\draw (b2) edge (e2);
+  %\draw (c2) edge (e2);
+  %\draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+  \draw[A,line width=1pt] \convexpath{a2,b2}{15pt};
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d1)   [var, minimum size=0.7cm, fill=D] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c1)   [var, minimum size=0.7cm, fill=C] {$C_3$};  &
+    \node (e1)   [var, minimum size=0.7cm, fill=E] {$E_2$};  &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  \draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  \draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  \draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  \draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                          & BEF                      & none                 \\
+%  D                          & BD                       & none                 \\
+%  E                          & BEC                      & (B,C)                \\
+%  C                          & ABC                      & none                 \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+%{\footnotesize Text.
+
+\begin{tikzpicture}[transform shape]
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+                                                             &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b2)   [var, minimum size=0.7cm, fill=B] {$B_4$};  &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+                                                             &
+                                                             &
+                                                             &
+                                                             &
+                                                            \\
+    % Forth line
+                                                             &
+                                                             &
+                                                             &
+                                                             &
+                                                            \\
+  };
+
+  %\draw (a2) edge (b2);
+  %\draw (a2) edge (c2);
+  %\draw (b2) edge (c2);
+  %\draw (b2) edge (d2);
+  %\draw (b2) edge (f2);
+  %\draw (b2) edge (e2);
+  %\draw (c2) edge (e2);
+  %\draw (e2) edge (f2);
+
+  %\path (b1) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c1);
+
+  %\draw[F,line width=1pt] \convexpath{b2,f2,e2}{15pt};
+  %\draw[D,line width=1pt] \convexpath{b2,d2}{15pt};
+  %\draw[E,line width=1pt] \convexpath{b2,e2,c2}{15pt};
+  %\draw[C,line width=1pt] \convexpath{a2,b2,c2}{15pt};
+  %\draw[A,line width=1pt] \convexpath{a2,b2}{15pt};
+  \draw[B, line width=1pt] (b2) circle (0.55cm);
+
+\end{tikzpicture}
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d1)   [var, minimum size=0.7cm, fill=D] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c1)   [var, minimum size=0.7cm, fill=C] {$C_3$};  &
+    \node (e1)   [var, minimum size=0.7cm, fill=E] {$E_2$};  &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  \draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  \draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  \draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  \draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                          & BEF                      & none                 \\
+%  D                          & BD                       & none                 \\
+%  E                          & BEC                      & (B,C)                \\
+%  C                          & ABC                      & none                 \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Triangulation: Min-fill Algorithm}
+
+\centering
+
+%{\footnotesize Text.
+
+\begin{tikzpicture}[transform shape]
+
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                             &
+                                                             &
+    \node (d1)   [var, minimum size=0.7cm, fill=D] {$D_7$};  &
+                                                             &
+                                                            \\
+    % Second line
+                                                             &
+    \node (b1)   [var, minimum size=0.7cm] {$B_4$};          &
+                                                             &
+                                                             &
+                                                            \\
+    % Third line
+    \node (a1) [var, minimum size=0.7cm] {$A_4$};            &
+                                                             &
+                                                             &
+    \node (f1) [var, minimum size=0.7cm, fill=F] {$F_3$};    &
+                                                            \\
+    % Forth line
+                                                             &
+    \node (c1)   [var, minimum size=0.7cm, fill=C] {$C_3$};  &
+    \node (e1)   [var, minimum size=0.7cm, fill=E] {$E_2$};  &
+                                                             &
+                                                            \\
+  };
+
+  \draw (a1) edge (b1);
+  \draw (a1) edge (c1);
+  \draw (b1) edge (c1);
+  \draw (b1) edge (d1);
+  \draw (b1) edge (f1);
+  \draw (b1) edge (e1);
+  \draw (c1) edge (e1);
+  \draw (e1) edge (f1);
+
+  \draw[F,line width=1pt] \convexpath{b1,f1,e1}{15pt};
+  \draw[D,line width=1pt] \convexpath{b1,d1}{15pt};
+  \draw[E,line width=1pt] \convexpath{b1,e1,c1}{15pt};
+  \draw[C,line width=1pt] \convexpath{a1,b1,c1}{15pt};
+
+\end{tikzpicture}
+
+%\begin{center}
+%  \scriptsize
+%  \begin{tabular}{ccc}
+%  \toprule
+%  \textbf{Eliminated Vertex} & \textbf{Induced Cluster} & \textbf{Edges Added} \\
+%  \midrule
+%  F                          & BEF                      & none                 \\
+%  D                          & BD                       & none                 \\
+%  E                          & BEC                      & (B,C)                \\
+%  C                          & ABC                      & none                 \\
+%  \bottomrule
+%  \end{tabular}
+%\end{center}
+%\vfill
+
+\end{frame}
+

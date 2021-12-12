@@ -1,0 +1,47 @@
+\begin{tikzpicture}[
+  %every node/.style={black},
+  %every path/.style={red},
+  transform shape]
+
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=0.05cm,column sep=0.5cm] {
+    % First line
+                                                  &
+                                                  &
+    \node (d)   [var, minimum size=0.7cm] {$D$};  &
+                                                 \\
+    % Second line
+                                                  &
+    \node (b)   [var, minimum size=0.7cm] {$B$};  &
+                                                  &
+                                                 \\
+    % Third line
+    \node (a) [var, minimum size=0.7cm] {$A$};    &
+                                                  &
+                                                  &
+    \node (f) [var, minimum size=0.7cm] {$F$};   \\
+    % Forth line
+                                                  &
+    \node (c)   [var, minimum size=0.7cm] {$C$};  &
+    \node (e)   [var, minimum size=0.7cm] {$E$};  &
+                                                 \\
+  };
+
+  \draw (a) edge (b);
+  \draw (a) edge (c);
+  \draw [](b) edge (c);
+  \draw (b) edge (d);
+  \draw (b) edge (f);
+  \draw (b) edge (e);
+  \draw (c) edge (e);
+  \draw (e) edge (f);
+
+  %\path (b) -- node[anchor=center,xshift=-0.25cm,yshift=-0.1cm] (bc) {$\rightarrow$} (c);
+
+  \draw[F,line width=1pt] \convexpath{b,f,e}{15pt};
+  \draw[D,line width=1pt] \convexpath{b,d}{15pt};
+  \draw[E,line width=1pt] \convexpath{b,e,c}{15pt};
+  \draw[C,line width=1pt] \convexpath{a,b,c}{15pt};
+
+\end{tikzpicture}
+

@@ -1,0 +1,47 @@
+\begin{tikzpicture}[>=latex]
+
+  \tikzset{CliqueStyle/.style =  {opacity=.4,color=#1,}}
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=0.26cm,column sep=0.20cm] {
+    % First line
+                                                         &
+                                                         &
+    \node (bd) [bag, minimum size=2.0cm, draw=D] {$\{B,\Circled[fill color=D]{D}\}$};  &
+                                                         &
+                                                        \\
+    % Second line
+                                                         &
+                                                         &
+    \node (b) [hsepset] {$\{B\}$};                    &
+                                                         &
+                                                        \\
+    % Third line
+    \node (abc) [bag,minimum size=2.0cm,draw=C] {$\{\Circled[fill color=A]{A},\Circled[fill color=B!40]{B},\Circled[fill color=C]{C}\}$};  &
+    \node (bc) [vsepset] {$\{B,C\}$};                    &
+    \node (bce) [bag,minimum size=2.0cm,draw=E] {$\{B,C,\Circled[fill color=E]{E}\}$};  &
+    \node (be) [vsepset] {$\{B,E\}$};                    &
+    \node (bef) [bag,minimum size=2.0cm,draw=F] {$\{B,E,\Circled[fill color=F]{F}\}$};
+                                                        \\
+  };
+
+  % The diagram elements are now connected through lines:
+  \path[-]
+    (bd) edge (b)
+    (b) edge (bce)
+    (abc) edge (bc)
+    (bc) edge (bce)
+    (bce) edge (be)
+    (be) edge (bef)
+    ;
+
+  %% Draw colored circles inside clusters corresponding to the assigned cliques
+  %\node at (bd) [draw,yshift=-4.0mm] [bag,CliqueStyle=MaterialGreen] {} ;
+  %\node at (abc) [draw,yshift= 5.0mm] [bag,CliqueStyle=MaterialOrange] {} ;
+  %\node at (abc) [draw,yshift=-4.0mm,xshift= 3.0mm] [bag,CliqueStyle=MaterialBlue] {} ;
+  %\node at (abc) [draw,yshift=-4.0mm,xshift=-3.0mm] [bag,CliqueStyle=MaterialCyan] {} ;
+  %\node at (bce) [draw,yshift=-4.0mm] [bag,CliqueStyle=MaterialPurple] {} ;
+  %\node at (bef) [draw,yshift=-4.0mm] [bag,CliqueStyle=MaterialRed] {} ;
+
+\end{tikzpicture}
+

@@ -1,0 +1,383 @@
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Message Passing}
+
+\centering
+
+{\footnotesize
+  \only<1>{
+    Represents the local computations that are necessary to spread each
+    cluster's information with every other cluster in the graph.
+  }
+  \only<2>{
+    Designate an arbitrary cluster as the \textit{root}.\\
+    This gives ``direction" to the edges.
+  }
+  \only<3>{
+    Two passes: \textit{inward} and \textit{outward}.
+  }
+  \only<4>{
+    Inward pass: each cluster passes a message to its \textit{parent}.\\
+    Backward pass: each cluster passes a message to each of its \textit{children}.
+  }
+  \only<5>{
+    A cluster can only pass a message to a neighbor after\\
+    it has received messages from all \textit{other} neighbors.
+  }
+}
+
+%\begin{subfigure}[b]{0.49\linewidth}
+%  \centering
+%  \scalebox{1.0}{\input{figures/bayesian-network.tex}}
+
+\begin{figure}
+\scalebox{0.85}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=0.5cm,column sep=1.0cm,ampersand replacement=\&] { % column sep=1.0cm causes an Overfull \hbox warning
+    % First line
+                                                                                       \&
+    \node (bd) [bag, thick, minimum size=2.0cm] {$\{B,D\}$};                           \&
+                                                                                      \\
+    % Second line
+    \node (abc) [bag, thick, minimum size=2.0cm, label={above:{Root}}] {$\{A,B,C\}$};  \&
+    \node (bce) [bag, thick, minimum size=2.0cm] {$\{B,C,E\}$};                        \&
+    \node (bef) [bag, thick, minimum size=2.0cm] {$\{B,E,F\}$};                       \\
+  };
+    
+  % The diagram elements are now connected through lines:
+  \path[-]
+    (bd) edge (bce)
+    (abc) edge (bce)
+    (bce) edge (bef)
+    ;
+
+  %\msgcircle{left}{down}{bd}{bce}{0.5}{$1$}{MaterialBlue};
+  %\msgcircle{up}{left}{bef}{bce}{0.5}{$2$}{MaterialBlue};
+  %\msgcircle{up}{left}{bce}{abc}{0.5}{$3$}{MaterialBlue};
+  %\msgcircle{down}{right}{abc}{bce}{0.5}{$4$}{MaterialRed};
+  %\msgcircle{right}{up}{bce}{bd}{0.5}{$5$}{MaterialRed};
+  %\msgcircle{down}{right}{bce}{bef}{0.5}{$6$}{MaterialRed};
+    
+\end{tikzpicture}
+}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Message Passing}
+
+\centering
+
+\begin{figure}
+\scalebox{0.85}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=0.5cm,column sep=1.0cm,ampersand replacement=\&] { % column sep=1.0cm causes an Overfull \hbox warning
+    % First line
+                                                                                       \&
+    \node (bd) [bag, thick, minimum size=2.0cm] {$\{B,D\}$};                           \&
+                                                                                      \\
+    % Second line
+    \node (abc) [bag, thick, minimum size=2.0cm, label={above:{Root}}] {$\{A,B,C\}$};  \&
+    \node (bce) [bag, thick, minimum size=2.0cm] {$\{B,C,E\}$};                        \&
+    \node (bef) [bag, thick, minimum size=2.0cm] {$\{B,E,F\}$};                       \\
+  };
+    
+  % The diagram elements are now connected through lines:
+  \path[-]
+    (bd) edge (bce)
+    (abc) edge (bce)
+    (bce) edge (bef)
+    ;
+
+  %\msgcircle{left}{down}{bd}{bce}{0.5}{$1$}{MaterialBlue};
+  %\msgcircle{up}{left}{bef}{bce}{0.5}{$2$}{MaterialBlue};
+  %\msgcircle{up}{left}{bce}{abc}{0.5}{$3$}{MaterialBlue};
+  %\msgcircle{down}{right}{abc}{bce}{0.5}{$4$}{MaterialRed};
+  %\msgcircle{right}{up}{bce}{bd}{0.5}{$5$}{MaterialRed};
+  %\msgcircle{down}{right}{bce}{bef}{0.5}{$6$}{MaterialRed};
+    
+\end{tikzpicture}
+}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Message Passing}
+
+\centering
+
+\begin{figure}
+\scalebox{0.85}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=0.5cm,column sep=1.0cm,ampersand replacement=\&] { % column sep=1.0cm causes an Overfull \hbox warning
+    % First line
+                                                                                       \&
+    \node (bd) [bag, thick, minimum size=2.0cm] {$\{B,D\}$};                           \&
+                                                                                      \\
+    % Second line
+    \node (abc) [bag, thick, minimum size=2.0cm, label={above:{Root}}] {$\{A,B,C\}$};  \&
+    \node (bce) [bag, thick, minimum size=2.0cm] {$\{B,C,E\}$};                        \&
+    \node (bef) [bag, thick, minimum size=2.0cm] {$\{B,E,F\}$};                       \\
+  };
+    
+  % The diagram elements are now connected through lines:
+  \path[-]
+    (bd) edge (bce)
+    (abc) edge (bce)
+    (bce) edge (bef)
+    ;
+
+  \msgcircle{left}{down}{bd}{bce}{0.5}{$1$}{MaterialBlue};
+  %\msgcircle{up}{left}{bef}{bce}{0.5}{$2$}{MaterialBlue};
+  %\msgcircle{up}{left}{bce}{abc}{0.5}{$3$}{MaterialBlue};
+  %\msgcircle{down}{right}{abc}{bce}{0.5}{$4$}{MaterialRed};
+  %\msgcircle{right}{up}{bce}{bd}{0.5}{$5$}{MaterialRed};
+  %\msgcircle{down}{right}{bce}{bef}{0.5}{$6$}{MaterialRed};
+    
+\end{tikzpicture}
+}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Message Passing}
+
+\centering
+
+\begin{figure}
+\scalebox{0.85}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=0.5cm,column sep=1.0cm,ampersand replacement=\&] { % column sep=1.0cm causes an Overfull \hbox warning
+    % First line
+                                                                                       \&
+    \node (bd) [bag, thick, minimum size=2.0cm] {$\{B,D\}$};                           \&
+                                                                                      \\
+    % Second line
+    \node (abc) [bag, thick, minimum size=2.0cm, label={above:{Root}}] {$\{A,B,C\}$};  \&
+    \node (bce) [bag, thick, minimum size=2.0cm] {$\{B,C,E\}$};                        \&
+    \node (bef) [bag, thick, minimum size=2.0cm] {$\{B,E,F\}$};                       \\
+  };
+    
+  % The diagram elements are now connected through lines:
+  \path[-]
+    (bd) edge (bce)
+    (abc) edge (bce)
+    (bce) edge (bef)
+    ;
+
+  \msgcircle{left}{down}{bd}{bce}{0.5}{$1$}{MaterialBlue};
+  \msgcircle{up}{left}{bef}{bce}{0.5}{$2$}{MaterialBlue};
+  %\msgcircle{up}{left}{bce}{abc}{0.5}{$3$}{MaterialBlue};
+  %\msgcircle{down}{right}{abc}{bce}{0.5}{$4$}{MaterialRed};
+  %\msgcircle{right}{up}{bce}{bd}{0.5}{$5$}{MaterialRed};
+  %\msgcircle{down}{right}{bce}{bef}{0.5}{$6$}{MaterialRed};
+    
+\end{tikzpicture}
+}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Message Passing}
+
+\centering
+
+\begin{figure}
+\scalebox{0.85}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=0.5cm,column sep=1.0cm,ampersand replacement=\&] { % column sep=1.0cm causes an Overfull \hbox warning
+    % First line
+                                                                                       \&
+    \node (bd) [bag, thick, minimum size=2.0cm] {$\{B,D\}$};                           \&
+                                                                                      \\
+    % Second line
+    \node (abc) [bag, thick, minimum size=2.0cm, label={above:{Root}}] {$\{A,B,C\}$};  \&
+    \node (bce) [bag, thick, minimum size=2.0cm] {$\{B,C,E\}$};                        \&
+    \node (bef) [bag, thick, minimum size=2.0cm] {$\{B,E,F\}$};                       \\
+  };
+    
+  % The diagram elements are now connected through lines:
+  \path[-]
+    (bd) edge (bce)
+    (abc) edge (bce)
+    (bce) edge (bef)
+    ;
+
+  \msgcircle{left}{down}{bd}{bce}{0.5}{$1$}{MaterialBlue};
+  \msgcircle{up}{left}{bef}{bce}{0.5}{$2$}{MaterialBlue};
+  \msgcircle{up}{left}{bce}{abc}{0.5}{$3$}{MaterialBlue};
+  %\msgcircle{down}{right}{abc}{bce}{0.5}{$4$}{MaterialRed};
+  %\msgcircle{right}{up}{bce}{bd}{0.5}{$5$}{MaterialRed};
+  %\msgcircle{down}{right}{bce}{bef}{0.5}{$6$}{MaterialRed};
+    
+\end{tikzpicture}
+}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Message Passing}
+
+\centering
+
+\begin{figure}
+\scalebox{0.85}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=0.5cm,column sep=1.0cm,ampersand replacement=\&] { % column sep=1.0cm causes an Overfull \hbox warning
+    % First line
+                                                                                       \&
+    \node (bd) [bag, thick, minimum size=2.0cm] {$\{B,D\}$};                           \&
+                                                                                      \\
+    % Second line
+    \node (abc) [bag, thick, minimum size=2.0cm, label={above:{Root}}] {$\{A,B,C\}$};  \&
+    \node (bce) [bag, thick, minimum size=2.0cm] {$\{B,C,E\}$};                        \&
+    \node (bef) [bag, thick, minimum size=2.0cm] {$\{B,E,F\}$};                       \\
+  };
+    
+  % The diagram elements are now connected through lines:
+  \path[-]
+    (bd) edge (bce)
+    (abc) edge (bce)
+    (bce) edge (bef)
+    ;
+
+  \msgcircle{left}{down}{bd}{bce}{0.5}{$1$}{MaterialBlue};
+  \msgcircle{up}{left}{bef}{bce}{0.5}{$2$}{MaterialBlue};
+  \msgcircle{up}{left}{bce}{abc}{0.5}{$3$}{MaterialBlue};
+  \msgcircle{down}{right}{abc}{bce}{0.5}{$4$}{MaterialRed};
+  %\msgcircle{right}{up}{bce}{bd}{0.5}{$5$}{MaterialRed};
+  %\msgcircle{down}{right}{bce}{bef}{0.5}{$6$}{MaterialRed};
+    
+\end{tikzpicture}
+}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Message Passing}
+
+\centering
+
+\begin{figure}
+\scalebox{0.85}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=0.5cm,column sep=1.0cm,ampersand replacement=\&] { % column sep=1.0cm causes an Overfull \hbox warning
+    % First line
+                                                                                       \&
+    \node (bd) [bag, thick, minimum size=2.0cm] {$\{B,D\}$};                           \&
+                                                                                      \\
+    % Second line
+    \node (abc) [bag, thick, minimum size=2.0cm, label={above:{Root}}] {$\{A,B,C\}$};  \&
+    \node (bce) [bag, thick, minimum size=2.0cm] {$\{B,C,E\}$};                        \&
+    \node (bef) [bag, thick, minimum size=2.0cm] {$\{B,E,F\}$};                       \\
+  };
+    
+  % The diagram elements are now connected through lines:
+  \path[-]
+    (bd) edge (bce)
+    (abc) edge (bce)
+    (bce) edge (bef)
+    ;
+
+  \msgcircle{left}{down}{bd}{bce}{0.5}{$1$}{MaterialBlue};
+  \msgcircle{up}{left}{bef}{bce}{0.5}{$2$}{MaterialBlue};
+  \msgcircle{up}{left}{bce}{abc}{0.5}{$3$}{MaterialBlue};
+  \msgcircle{down}{right}{abc}{bce}{0.5}{$4$}{MaterialRed};
+  \msgcircle{right}{up}{bce}{bd}{0.5}{$5$}{MaterialRed};
+  %\msgcircle{down}{right}{bce}{bef}{0.5}{$6$}{MaterialRed};
+    
+\end{tikzpicture}
+}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+%%
+%------------------------------------------------------------------------------
+
+\begin{frame}[fragile]{Message Passing}
+
+\centering
+
+%{\footnotesize
+%  Ultimately, two messages in opposite directions will be passing through each
+%  edge.
+%}
+
+\begin{figure}
+\scalebox{0.85}{
+\begin{tikzpicture}[>=latex]
+  
+  % The various elements are conveniently placed using a matrix:
+  \matrix[row sep=0.5cm,column sep=1.0cm,ampersand replacement=\&] { % column sep=1.0cm causes an Overfull \hbox warning
+    % First line
+                                                                                       \&
+    \node (bd) [bag, thick, minimum size=2.0cm] {$\{B,D\}$};                           \&
+                                                                                      \\
+    % Second line
+    \node (abc) [bag, thick, minimum size=2.0cm, label={above:{Root}}] {$\{A,B,C\}$};  \&
+    \node (bce) [bag, thick, minimum size=2.0cm] {$\{B,C,E\}$};                        \&
+    \node (bef) [bag, thick, minimum size=2.0cm] {$\{B,E,F\}$};                       \\
+  };
+    
+  % The diagram elements are now connected through lines:
+  \path[-]
+    (bd) edge (bce)
+    (abc) edge (bce)
+    (bce) edge (bef)
+    ;
+
+  \msgcircle{left}{down}{bd}{bce}{0.5}{$1$}{MaterialBlue};
+  \msgcircle{up}{left}{bef}{bce}{0.5}{$2$}{MaterialBlue};
+  \msgcircle{up}{left}{bce}{abc}{0.5}{$3$}{MaterialBlue};
+  \msgcircle{down}{right}{abc}{bce}{0.5}{$4$}{MaterialRed};
+  \msgcircle{right}{up}{bce}{bd}{0.5}{$5$}{MaterialRed};
+  \msgcircle{down}{right}{bce}{bef}{0.5}{$6$}{MaterialRed};
+    
+\end{tikzpicture}
+}
+\end{figure}
+
+\end{frame}
+
