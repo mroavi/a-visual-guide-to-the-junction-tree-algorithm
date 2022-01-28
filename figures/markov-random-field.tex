@@ -7,7 +7,7 @@
 \begin{tikzpicture}[darkstyle/.style={circle,draw,minimum size=20}]
   \foreach \x in {0,...,3}
     \foreach \y in {0,...,3} 
-        {\pgfmathtruncatemacro{\label}{\x - 4 *  \y +17}
+        {\pgfmathtruncatemacro{\label}{\x - 4 *  \y +13}
         \node [darkstyle]  (\x\y) at (1.5*\x,1.5*\y) {\label};} 
   \foreach \x in {0,...,3}
     \foreach \y [count=\yi] in {0,...,2}  
