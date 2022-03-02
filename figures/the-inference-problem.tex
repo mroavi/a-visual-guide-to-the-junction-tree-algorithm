@@ -1,11 +1,11 @@
 \tikzset {
   every node/.style={node distance=20mm and 1.0mm},
   myroundbox/.style= {
-    rectangle,rounded corners=3mm,drop shadow,minimum height=0.7cm,font=\small,
+    rectangle,rounded corners=3mm,drop shadow,minimum height=1.0cm,font=\small,
     minimum width=\columnwidth*0.28,align=center,fill=white,draw=black,
   },
   myrectbox/.style= {
-    rectangle,drop shadow,minimum height=0.7cm,font=\small,
+    rectangle,drop shadow,minimum height=1.0cm,font=\small,
     minimum width=\columnwidth*0.28,align=center,fill=white,draw=black,
   },
   myarrow/.style={=black,-{Stealth[scale=1.0]},shorten >=2pt},
@@ -40,7 +40,7 @@
   % row 0
   \node[above=of aux2,yshift=-12mm] (in) {\textbf{Input}};
   % row 4
-  \node[below=of mar_aux,yshift=10mm] (out) {\textbf{Output}};
+  \node[below=of mar_aux,yshift=7mm] (out) {\textbf{Output}};
 
   %% edges
   \draw[myarrow] (rv) -- (ie);
