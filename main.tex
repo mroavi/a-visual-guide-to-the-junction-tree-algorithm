@@ -189,6 +189,59 @@
 }
 
 %==============================================================================
+\section{Bayesian Inference}
+%==============================================================================
+
+%%------------------------------------------------------------------------------
+%\begin{frame}{Bayesian Inference}
+%  \begin{figure}
+%    \vspace{0.5cm} % manually adjust vertical positioning
+%    \includegraphics[scale=0.13]{figures/reverend-thomas-bayes.jpg}
+%  \end{figure}
+%\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}{The Inference Problem}
+  \begin{small}
+    \begin{quote} 
+      Given a set of \textbf{random variables} $\mathcal{V}$ and their
+      \textbf{joint distribution} $P(\mathcal{V})$,\\ compute one or more conditional
+      distributions given observations.
+    \end{quote}
+  \end{small}
+\end{frame}
+
+%------------------------------------------------------------------------------
+\begin{frame}{The Inference Problem}
+  \begin{figure}
+    \vspace{0.5cm} % manually adjust vertical positioning
+    \scalebox{0.7}{\input{figures/the-inference-problem.tex}}
+  \end{figure}
+  %\begin{footnotesize}
+  %  \begin{columns}[T]
+  %    % Column 1
+  %    \begin{column}{0.5\textwidth}
+  %      \textbf{Input}
+  %      \begin{itemize}
+  %        \item A set of random variables $\mathcal{V}$
+  %        \item A joint probability distribution over $\mathcal{V}$
+  %          \[ P(\mathcal{V}) = \prod_{V\in\mathcal{V}} P(V \mid pa(V)) \]
+  %        \item An evidence assignment $\bm{E=e}$ 
+  %        \item A set of query variables $\bm{Q}$ 
+  %      \end{itemize}
+  %    \end{column}
+  %    % Column 2
+  %    \begin{column}{0.5\textwidth}
+  %      \textbf{Output}
+  %      \begin{itemize} \item The conditional distribution $P(\bm{Q} \mid
+  %        {\bf E=e})$ given the evidence $\bm{e}$ 
+  %      \end{itemize}
+  %    \end{column}
+  %  \end{columns}
+  %\end{footnotesize}
+\end{frame}
+
+%==============================================================================
 \section{Probabilistic Graphical Models}
 %==============================================================================
 
@@ -268,59 +321,6 @@
 %  been developed in one field can be transferred between research communities and
 %  exploited more widely.
 %}
-
-%==============================================================================
-\section{Bayesian Inference}
-%==============================================================================
-
-%%------------------------------------------------------------------------------
-%\begin{frame}{Bayesian Inference}
-%  \begin{figure}
-%    \vspace{0.5cm} % manually adjust vertical positioning
-%    \includegraphics[scale=0.13]{figures/reverend-thomas-bayes.jpg}
-%  \end{figure}
-%\end{frame}
-
-%------------------------------------------------------------------------------
-\begin{frame}{The Inference Problem}
-  \begin{small}
-    \begin{quote} 
-      Given a set of \textbf{random variables} $\mathcal{V}$ and their
-      \textbf{joint distribution} $P(\mathcal{V})$,\\ compute one or more conditional
-      distributions given observations.
-    \end{quote}
-  \end{small}
-\end{frame}
-
-%------------------------------------------------------------------------------
-\begin{frame}{The Inference Problem}
-  \begin{figure}
-    \vspace{0.5cm} % manually adjust vertical positioning
-    \scalebox{0.7}{\input{figures/the-inference-problem.tex}}
-  \end{figure}
-  %\begin{footnotesize}
-  %  \begin{columns}[T]
-  %    % Column 1
-  %    \begin{column}{0.5\textwidth}
-  %      \textbf{Input}
-  %      \begin{itemize}
-  %        \item A set of random variables $\mathcal{V}$
-  %        \item A joint probability distribution over $\mathcal{V}$
-  %          \[ P(\mathcal{V}) = \prod_{V\in\mathcal{V}} P(V \mid pa(V)) \]
-  %        \item An evidence assignment $\bm{E=e}$ 
-  %        \item A set of query variables $\bm{Q}$ 
-  %      \end{itemize}
-  %    \end{column}
-  %    % Column 2
-  %    \begin{column}{0.5\textwidth}
-  %      \textbf{Output}
-  %      \begin{itemize} \item The conditional distribution $P(\bm{Q} \mid
-  %        {\bf E=e})$ given the evidence $\bm{e}$ 
-  %      \end{itemize}
-  %    \end{column}
-  %  \end{columns}
-  %\end{footnotesize}
-\end{frame}
 
 %==============================================================================
 \section{The Junction Tree Algorithm}
