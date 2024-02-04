@@ -1,3 +1,8 @@
+# https://tex.stackexchange.com/a/501503
+# $pdf_mode = 1; # pdflatex
+# $pdf_mode = 4; # lualatex
+$pdf_mode = 5; # xelatex
+
 $ENV{'TEXINPUTS'}='./sty//:' . $ENV{'TEXINPUTS'}; 
 
 # support for the glossaries package:
